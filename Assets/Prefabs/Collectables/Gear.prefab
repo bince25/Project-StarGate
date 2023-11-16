@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 873095010131151772}
   - component: {fileID: 1479559368708230996}
+  - component: {fileID: 4089053273800274375}
   - component: {fileID: 716557446604220186}
   - component: {fileID: 1152076732149754164}
   m_Layer: 0
@@ -29,8 +30,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -7.664542, y: 1.5879079, z: 0}
-  m_LocalScale: {x: 0.35, y: 0.35, z: 1.7499998}
-  m_ConstrainProportionsScale: 1
+  m_LocalScale: {x: 0.7, y: 0.7, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -86,6 +87,18 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &4089053273800274375
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1190454375767041416}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f773f2b7f5e54735af6700d78f17958, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!61 &716557446604220186
 BoxCollider2D:
   m_ObjectHideFlags: 0

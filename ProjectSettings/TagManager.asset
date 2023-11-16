@@ -6,6 +6,9 @@ TagManager:
   tags:
   - Sword
   - Enemy
+  - Gear
+  - Wall
+  - Obstacle
   layers:
   - Default
   - TransparentFX

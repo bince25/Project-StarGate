@@ -24,11 +24,11 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    void OnTriggerEnter2D(Collider2D other)
+    void OnCollisionEnter2D(Collision2D other)
     {
-        if (other.CompareTag("Gear"))
+        if (other.collider.CompareTag("Gear"))
         {
-            other.gameObject.GetComponent<GearController>().GetCollected();
+            other.collider.GetComponent<GearController>().GetCollected();
         }
     }
 }
