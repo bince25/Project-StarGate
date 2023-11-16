@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 5613169589204693409}
   - component: {fileID: 7065261404069888739}
   - component: {fileID: 2898895685611995611}
+  - component: {fileID: 1063882941718695922}
   m_Layer: 0
   m_Name: Spark
   m_TagString: Untagged
@@ -3877,7 +3878,7 @@ ParticleSystem:
       properties: 0
       emitProbability: 1
   LightsModule:
-    enabled: 0
+    enabled: 1
     ratio: 0.25
     light: {fileID: 0}
     randomDistribution: 1
@@ -4886,3 +4887,16 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
+--- !u!114 &1063882941718695922
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7114707331762081372}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6813c918c9041ad47a75763aad855786, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Prefab: {fileID: 4570765539799366149, guid: d128c8944eb2b0448b44a9f3c8ed0689, type: 3}
