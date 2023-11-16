@@ -67,14 +67,15 @@ public class SwordController : MonoBehaviour
             // Change the rotation speed according to the sword's momentum comparison
             float otherSwordMomentum = otherSword.weight * otherSword.currentRotationSpeed;
             float thisSwordMomentum = weight * currentRotationSpeed;
-            float momentumDifference = otherSwordMomentum - thisSwordMomentum;
+            float momentumDifference = (otherSwordMomentum - thisSwordMomentum) / Mathf.Max(otherSwordMomentum, thisSwordMomentum);
 
-            if (momentumDifference > 0)
+            if (momentumDifference > Constants.SWORD_DEFAULT_MOMENTUM_DIFFERENCE_THRESHOLD_PRECENTAGE)
             {
                 // The other sword has more momentum, so this sword's rotation speed should be increased
                 ChangeSpeedTemporarily(defaultRotationSpeed + momentumDifference / weight, 0.5f);
+                ReverseRotation();
             }
-            else if (momentumDifference < 0)
+            else if (momentumDifference < -Constants.SWORD_DEFAULT_MOMENTUM_DIFFERENCE_THRESHOLD_PRECENTAGE)
             {
                 // This sword has more momentum, so the other sword's rotation speed should be increased
                 otherSword.ChangeSpeedTemporarily(otherSword.defaultRotationSpeed - momentumDifference / otherSword.weight, 0.5f);
