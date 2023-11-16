@@ -6,6 +6,7 @@ public class EnemyController : MonoBehaviour
 {
     public float health = 1f;
     public float damage = 1f;
+    public Enemy enemyType = Enemy.Basic;
 
     // Start is called before the first frame update
     void Start()
