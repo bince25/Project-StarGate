@@ -39,7 +39,7 @@ public class SwordController : MonoBehaviour
         // Increase speed to targetSpeed
         while (time < duration / 2)
         {
-            currentRotationSpeed = Mathf.Lerp(initialSpeed, targetSpeed, time / (duration / 2));
+            currentRotationSpeed = Mathf.Lerp(initialSpeed, targetSpeed, time / (duration / 4));
             time += Time.deltaTime;
             yield return null;
         }
@@ -48,7 +48,7 @@ public class SwordController : MonoBehaviour
         time = 0; // reset time for the decreasing phase
         while (time < duration / 2)
         {
-            currentRotationSpeed = Mathf.Lerp(targetSpeed, defaultRotationSpeed, time / (duration / 2));
+            currentRotationSpeed = Mathf.Lerp(targetSpeed, defaultRotationSpeed, time / (3 * duration / 4));
             time += Time.deltaTime;
             yield return null;
         }
@@ -63,7 +63,6 @@ public class SwordController : MonoBehaviour
         if (other.CompareTag("Sword"))
         {
             SwordController otherSword = other.GetComponent<SwordController>();
-            // Change the rotation direction
 
             // Change the rotation speed according to the sword's momentum comparison
             float otherSwordMomentum = otherSword.weight * otherSword.currentRotationSpeed;
@@ -77,6 +76,11 @@ public class SwordController : MonoBehaviour
                 ChangeSpeedTemporarily(defaultRotationSpeed + Math.Abs(momentumDifference) / weight, 0.7f);
                 ReverseRotation();
             }
+        }
+        else if (other.CompareTag("Enemy"))
+        {
+            EnemyController enemy = other.GetComponent<EnemyController>();
+            enemy.TakeDamage(10);
         }
     }
 }
