@@ -5,6 +5,7 @@ using UnityEngine;
 public enum Enemy
 {
     Basic,
+    Normal,
     Elite,
     Boss
 }

@@ -11,16 +11,21 @@ public class SwordController : MonoBehaviour
     private bool isReversed = false;
     public GameObject collisionParticles;
 
-    // SOUND 
+    public float durability = SwordConstants.SWORD_DEFAULT_DURABILITY;
+    public float damage = SwordConstants.SWORD_DEFAULT_DAMAGE;
+
+    // SOUND EFFECTS
     public AudioClip collisionSound; // Add this variable
 
     private AudioSource audioSource; // Reference to the AudioSource component
+
+    private ContactPoint2D[] contacts = new ContactPoint2D[1];
 
     void Start()
     {
         currentRotationSpeed = defaultRotationSpeed;
 
-         // Get the AudioSource component or add one if not present
+        // Get the AudioSource component or add one if not present
         audioSource = GetComponent<AudioSource>();
         if (audioSource == null)
         {
@@ -78,50 +83,135 @@ public class SwordController : MonoBehaviour
         // Check if the sword collided with another sword
         if (other.collider.CompareTag("Sword"))
         {
-            SwordController otherSword = other.collider.GetComponent<SwordController>();
-
-            // Get the contact points from the collision
-            ContactPoint2D[] contacts = new ContactPoint2D[1];
-            other.GetContacts(contacts);
-            // Change the rotation direction
-             // Play the particle effect
-            if (collisionParticles != null && this.transform.parent.gameObject.tag == "Player")
-            {
-                if (contacts.Length > 0)
-            {   
-                Vector2 contactPoint = contacts[0].point;
-                Debug.Log("Contact point: " + contactPoint);
-                GameObject particles =  Instantiate(collisionParticles, contactPoint, Quaternion.identity);
-
-                 // Get the particle system component from the instantiated prefab
-                ParticleSystem particlesSystem = particles.GetComponent<ParticleSystem>();
-
-                // Destroy the instantiated object after the duration of the particle system
-                Destroy(particles, particlesSystem.main.duration+ 0.3f);
-            }
-            }
-            // Change the rotation speed according to the sword's momentum comparison
-            float otherSwordMomentum = otherSword.weight * otherSword.currentRotationSpeed;
-            float thisSwordMomentum = weight * currentRotationSpeed;
-            float momentumDifference = otherSwordMomentum - thisSwordMomentum;
-            float momentumDifferencePercentage = (otherSwordMomentum - thisSwordMomentum) / Mathf.Max(otherSwordMomentum, thisSwordMomentum);
-            Camera.main.GetComponent<CameraController>().TriggerShake();
-            if (collisionSound != null && audioSource != null)
-            {
-                audioSource.Play();
-            }
-
-            if (momentumDifferencePercentage > Constants.SWORD_DEFAULT_MOMENTUM_DIFFERENCE_THRESHOLD_PRECENTAGE)
-            {
-                // The other sword has more momentum, so this sword's rotation speed should be increased
-                ChangeSpeedTemporarily(defaultRotationSpeed + Math.Abs(momentumDifference) / weight, 0.7f);
-                ReverseRotation();
-            }
+            HandleSwordCollision(other);
         }
         else if (other.collider.CompareTag("Enemy"))
         {
-            EnemyController enemy = other.collider.GetComponent<EnemyController>();
-            enemy.TakeDamage(10);
+            HandleEnemyCollision(other);
+        }
+        else if (other.collider.CompareTag("Wall"))
+        {
+            HandleWallCollision(other);
+        }
+        else if (other.collider.CompareTag("Obstacle"))
+        {
+            HandleObstacleCollision(other);
+        }
+    }
+
+    private void HandleSwordCollision(Collision2D collision)
+    {
+        SwordController otherSword = collision.collider.GetComponent<SwordController>();
+
+        HandleSoundEffect();
+        CreateSparkParticles(collision);
+        HandleMomentumCollision(otherSword);
+
+        HandleDurabilityChange(CollisionType.Sword);
+
+        Camera.main.GetComponent<CameraController>().TriggerShake();
+    }
+
+    private void HandleMomentumCollision(SwordController otherSword)
+    {
+        // Change the rotation speed according to the sword's momentum comparison
+        float otherSwordMomentum = otherSword.weight * otherSword.currentRotationSpeed;
+        float thisSwordMomentum = weight * currentRotationSpeed;
+        float momentumDifference = otherSwordMomentum - thisSwordMomentum;
+        float momentumDifferencePercentage = (otherSwordMomentum - thisSwordMomentum) / Mathf.Max(otherSwordMomentum, thisSwordMomentum);
+
+        if (momentumDifferencePercentage > SwordConstants.SWORD_DEFAULT_MOMENTUM_DIFFERENCE_THRESHOLD_PRECENTAGE)
+        {
+            // The other sword has more momentum, so this sword's rotation speed should be increased
+            ChangeSpeedTemporarily(defaultRotationSpeed + Math.Abs(momentumDifference) / weight, 0.7f);
+            ReverseRotation();
+        }
+    }
+
+    private void CreateSparkParticles(Collision2D collision)
+    {
+        // Get the contact points from the collision
+        collision.GetContacts(contacts);
+        // Change the rotation direction
+        // Play the particle effect
+        if (collisionParticles != null && this.transform.parent.gameObject.tag == "Player")
+        {
+            if (contacts.Length > 0)
+            {
+                Vector2 contactPoint = contacts[0].point;
+                Debug.Log("Contact point: " + contactPoint);
+                GameObject particles = Instantiate(collisionParticles, contactPoint, Quaternion.identity);
+
+                // Get the particle system component from the instantiated prefab
+                ParticleSystem particlesSystem = particles.GetComponent<ParticleSystem>();
+
+                // Destroy the instantiated object after the duration of the particle system
+                Destroy(particles, particlesSystem.main.duration + 0.3f);
+            }
+        }
+    }
+
+    private void HandleSoundEffect()
+    {
+        if (collisionSound != null && audioSource != null)
+        {
+            audioSource.Play();
+        }
+    }
+
+    private void HandleEnemyCollision(Collision2D collision)
+    {
+        EnemyController enemy = collision.collider.GetComponent<EnemyController>();
+        enemy.TakeDamage(damage);
+
+        switch (enemy.enemyType)
+        {
+            case Enemy.Basic:
+                HandleDurabilityChange(CollisionType.EnemyBasic);
+                break;
+            case Enemy.Normal:
+                HandleDurabilityChange(CollisionType.EnemyNormal);
+                break;
+            case Enemy.Elite:
+                HandleDurabilityChange(CollisionType.EnemyElite);
+                break;
+            case Enemy.Boss:
+                HandleDurabilityChange(CollisionType.EnemyBoss);
+                break;
+        }
+    }
+
+    private void HandleWallCollision(Collision2D collision)
+    {
+        ReverseRotation();
+        HandleDurabilityChange(CollisionType.Wall);
+    }
+
+    private void HandleObstacleCollision(Collision2D collision)
+    {
+        ReverseRotation();
+        HandleDurabilityChange(CollisionType.Obstacle);
+    }
+
+    private void HandleDurabilityChange(CollisionType collisionType)
+    {
+        switch (collisionType)
+        {
+            case CollisionType.EnemyBasic:
+                durability -= SwordConstants.BASIC_ENEMY_DEFAULT_DURABILITY_LOSS;
+                break;
+            case CollisionType.EnemyNormal:
+                durability -= SwordConstants.NORMAL_ENEMY_DEFAULT_DURABILITY_LOSS;
+                break;
+            case CollisionType.EnemyElite:
+                durability -= SwordConstants.ELITE_ENEMY_DEFAULT_DURABILITY_LOSS;
+                break;
+            case CollisionType.EnemyBoss:
+                durability -= SwordConstants.BOSS_ENEMY_DEFAULT_DURABILITY_LOSS;
+                break;
+            case CollisionType.Sword:
+                durability -= SwordConstants.OTHER_SWORD_DEFAULT_DURABILITY_LOSS;
+                break;
         }
     }
 }
