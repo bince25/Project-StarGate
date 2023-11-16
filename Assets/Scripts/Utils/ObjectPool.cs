@@ -3,21 +3,18 @@ using System.Collections.Generic;
 
 public class ObjectPool : MonoBehaviour
 {
-    public GameObject prefab; // The prefab of the object to pool.
-    public int poolSize = 10; // The initial size of the object pool.
-
+    public GameObject prefab;
     private Queue<GameObject> objectQueue = new Queue<GameObject>();
+    private Transform poolParent;
 
-    private void Start()
+    public void InitializePool(GameObject prefab, int initialSize, Transform parent)
     {
-        InitializePool();
-    }
+        this.prefab = prefab;
+        poolParent = parent;
 
-    private void InitializePool()
-    {
-        for (int i = 0; i < poolSize; i++)
+        for (int i = 0; i < initialSize; i++)
         {
-            GameObject obj = Instantiate(prefab, transform);
+            GameObject obj = Instantiate(prefab, poolParent);
             obj.SetActive(false);
             objectQueue.Enqueue(obj);
         }
@@ -27,8 +24,7 @@ public class ObjectPool : MonoBehaviour
     {
         if (objectQueue.Count == 0)
         {
-            // If the pool is empty, create a new object.
-            GameObject newObj = Instantiate(prefab, transform);
+            GameObject newObj = Instantiate(prefab, poolParent);
             newObj.SetActive(false);
             return newObj;
         }

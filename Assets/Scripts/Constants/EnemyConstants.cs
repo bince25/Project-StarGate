@@ -22,4 +22,9 @@ public class EnemyConstants
 
 
     public const float ENEMY_NORMAL_RANGE = 8f;
+
+    public const int ENEMY_BASIC_GEAR_DROP = 1;
+    public const int ENEMY_NORMAL_GEAR_DROP = 2;
+    public const int ENEMY_ELITE_GEAR_DROP = 3;
+    public const int ENEMY_BOSS_GEAR_DROP = 5;
 }

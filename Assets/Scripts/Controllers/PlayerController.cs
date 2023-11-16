@@ -23,4 +23,12 @@ public class PlayerController : MonoBehaviour
             transform.Translate(moveDir * moveSpeed * Time.deltaTime, Space.World);
         }
     }
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("Gear"))
+        {
+            other.gameObject.GetComponent<GearController>().GetCollected();
+        }
+    }
 }

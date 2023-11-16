@@ -102,6 +102,8 @@ MonoBehaviour:
   weight: 1
   defaultRotationSpeed: 100
   collisionParticles: {fileID: 7114707331762081372, guid: dc4300f7519e15f419b671362aac2371, type: 3}
+  durability: 100
+  damage: 1
   collisionSound: {fileID: 0}
 --- !u!61 &2171265848212063935
 BoxCollider2D:
@@ -278,7 +280,8 @@ MonoBehaviour:
   health: 1
   damage: 1
   speed: 1
-  enemyType: 0
+  enemyType: 2
+  deathSound: {fileID: 8300000, guid: edc7a7644c09ec744bdb7eed7c1850d7, type: 3}
 --- !u!61 &1188487764354801325
 BoxCollider2D:
   m_ObjectHideFlags: 0
