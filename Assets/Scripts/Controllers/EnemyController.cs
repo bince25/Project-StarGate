@@ -9,8 +9,17 @@ public class EnemyController : MonoBehaviour
     public float speed = 1f;
     public Enemy enemyType = Enemy.Basic;
 
+    private AudioSource audioSource;
+    public AudioClip deathSound;
+
     void Start()
     {
+        audioSource = GetComponent<AudioSource>();
+        if (audioSource == null)
+        {
+            audioSource = gameObject.AddComponent<AudioSource>();
+        }
+        audioSource.clip = deathSound;
         switch (enemyType)
         {
             case Enemy.Basic:
@@ -45,6 +54,19 @@ public class EnemyController : MonoBehaviour
     {
         health -= damage;
         if (health <= 0)
+        {
+            Die();
+        }
+    }
+
+    public void Die()
+    {
+        if (deathSound != null && audioSource != null)
+        {
+            audioSource.Play();
+            Destroy(gameObject, audioSource.clip.length + 0.1f);
+        }
+        else
         {
             Destroy(gameObject);
         }
