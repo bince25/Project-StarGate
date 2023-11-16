@@ -9,10 +9,26 @@ public class SwordController : MonoBehaviour
     public float defaultRotationSpeed = 100f; // ms^-1
     private float currentRotationSpeed; // ms^-1
     private bool isReversed = false;
+    public GameObject collisionParticles;
+
+    // SOUND 
+    public AudioClip collisionSound; // Add this variable
+
+    private AudioSource audioSource; // Reference to the AudioSource component
 
     void Start()
     {
         currentRotationSpeed = defaultRotationSpeed;
+
+         // Get the AudioSource component or add one if not present
+        audioSource = GetComponent<AudioSource>();
+        if (audioSource == null)
+        {
+            audioSource = gameObject.AddComponent<AudioSource>();
+        }
+
+        // Set the collision sound clip
+        audioSource.clip = collisionSound;
     }
 
     void Update()
@@ -56,19 +72,44 @@ public class SwordController : MonoBehaviour
         currentRotationSpeed = defaultRotationSpeed; // ensure it's set back to default
     }
 
-    void OnTriggerEnter2D(Collider2D other)
+    void OnCollisionEnter2D(Collision2D other)
     {
-        Debug.Log("Sword collided with " + other.name);
+        Debug.Log("Sword collided with " + other.collider.name);
         // Check if the sword collided with another sword
-        if (other.CompareTag("Sword"))
+        if (other.collider.CompareTag("Sword"))
         {
-            SwordController otherSword = other.GetComponent<SwordController>();
+            SwordController otherSword = other.collider.GetComponent<SwordController>();
 
+            // Get the contact points from the collision
+            ContactPoint2D[] contacts = new ContactPoint2D[1];
+            other.GetContacts(contacts);
+            // Change the rotation direction
+             // Play the particle effect
+            if (collisionParticles != null && this.transform.parent.gameObject.tag == "Player")
+            {
+                if (contacts.Length > 0)
+            {   
+                Vector2 contactPoint = contacts[0].point;
+                Debug.Log("Contact point: " + contactPoint);
+                GameObject particles =  Instantiate(collisionParticles, contactPoint, Quaternion.identity);
+
+                 // Get the particle system component from the instantiated prefab
+                ParticleSystem particlesSystem = particles.GetComponent<ParticleSystem>();
+
+                // Destroy the instantiated object after the duration of the particle system
+                Destroy(particles, particlesSystem.main.duration+ 0.3f);
+            }
+            }
             // Change the rotation speed according to the sword's momentum comparison
             float otherSwordMomentum = otherSword.weight * otherSword.currentRotationSpeed;
             float thisSwordMomentum = weight * currentRotationSpeed;
             float momentumDifference = otherSwordMomentum - thisSwordMomentum;
             float momentumDifferencePercentage = (otherSwordMomentum - thisSwordMomentum) / Mathf.Max(otherSwordMomentum, thisSwordMomentum);
+            Camera.main.GetComponent<CameraController>().TriggerShake();
+            if (collisionSound != null && audioSource != null)
+            {
+                audioSource.Play();
+            }
 
             if (momentumDifferencePercentage > Constants.SWORD_DEFAULT_MOMENTUM_DIFFERENCE_THRESHOLD_PRECENTAGE)
             {
@@ -77,9 +118,9 @@ public class SwordController : MonoBehaviour
                 ReverseRotation();
             }
         }
-        else if (other.CompareTag("Enemy"))
+        else if (other.collider.CompareTag("Enemy"))
         {
-            EnemyController enemy = other.GetComponent<EnemyController>();
+            EnemyController enemy = other.collider.GetComponent<EnemyController>();
             enemy.TakeDamage(10);
         }
     }
