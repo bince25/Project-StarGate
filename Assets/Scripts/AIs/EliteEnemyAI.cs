@@ -15,10 +15,13 @@ public class EliteEnemyAI : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         agent.updateRotation = false;
         agent.updateUpAxis = false;
+    }
+    void Start()
+    {
         playerTransform = PlayerController.Instance.transform;
+
         playerSword = playerTransform.GetComponentInChildren<SwordController>();
     }
-
     void Update()
     {
         if (playerTransform != null && IsPlayerInDetectionRange())

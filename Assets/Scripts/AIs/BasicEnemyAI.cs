@@ -14,13 +14,17 @@ public class BasicEnemyAI : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         agent.updateRotation = false;
         agent.updateUpAxis = false;
-        playerTransform = PlayerController.Instance.transform;
 
         // Get the Animator component
         animator = GetComponent<Animator>();
 
         // Get the SpriteRenderer component
         spriteRenderer = GetComponent<SpriteRenderer>();
+    }
+    void Start()
+    {
+
+        playerTransform = PlayerController.Instance.transform;
     }
     void Update()
     {
