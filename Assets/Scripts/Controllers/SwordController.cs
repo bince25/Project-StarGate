@@ -10,7 +10,7 @@ public class SwordController : MonoBehaviour
     private float currentRotationSpeed; // ms^-1
     private bool isReversed = false;
     public GameObject collisionParticles;
-
+    public SwordsEnum swordType;
     public float durability = SwordConstants.SWORD_DEFAULT_DURABILITY;
     public float damage = SwordConstants.SWORD_DEFAULT_DAMAGE;
 

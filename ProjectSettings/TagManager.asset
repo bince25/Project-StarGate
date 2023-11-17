@@ -10,7 +10,7 @@ TagManager:
   - Wall
   - Obstacle
   - Bullet
-  - NonWalkable
+  - Notification
   layers:
   - Default
   - TransparentFX

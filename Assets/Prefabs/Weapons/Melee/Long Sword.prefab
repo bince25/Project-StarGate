@@ -62,7 +62,7 @@ Transform:
   m_GameObject: {fileID: 8350305295733897419}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 2.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -136,6 +136,7 @@ MonoBehaviour:
   weight: 1
   defaultRotationSpeed: 300
   collisionParticles: {fileID: 7114707331762081372, guid: dc4300f7519e15f419b671362aac2371, type: 3}
+  swordType: 1
   durability: 100
   damage: 1
   edgeOfSword: {x: 0, y: 0, z: 0}

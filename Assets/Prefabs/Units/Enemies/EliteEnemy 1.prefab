@@ -110,6 +110,7 @@ MonoBehaviour:
   bulletSpawnPoint: {fileID: 0}
   bulletSpeed: 10
   shootingInterval: 2
+  collectablePrefab: {fileID: 3462710578260023422, guid: c40e6bb52e7ef5e499b10cb341d04359, type: 3}
 --- !u!114 &6083116296861766441
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -566,8 +567,8 @@ MonoBehaviour:
   m_ShadowVolumeIntensityEnabled: 0
   m_ShadowVolumeIntensity: 0.75
   m_LocalBounds:
-    m_Center: {x: -0.0123000145, y: 0.6391001, z: 0}
-    m_Extent: {x: 0.6598, y: 1.4361, z: 0}
+    m_Center: {x: -0.0092999935, y: 0.6423, z: 0}
+    m_Extent: {x: 0.6583, y: 1.4438001, z: 0}
   m_PointLightInnerAngle: 359.99997
   m_PointLightOuterAngle: 359.99997
   m_PointLightInnerRadius: 0

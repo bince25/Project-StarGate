@@ -14,6 +14,8 @@ public class EnemyController : MonoBehaviour
     public float bulletSpeed = 10f;
     public float shootingInterval = 2f;
 
+    private GameObject enemySword;
+
     void Start()
     {
         switch (enemyType)
@@ -29,6 +31,13 @@ public class EnemyController : MonoBehaviour
                 speed = EnemyConstants.ENEMY_NORMAL_SPEED;
                 break;
             case Enemy.Elite:
+                foreach (Transform child in transform)
+                {
+                    if (child.CompareTag("Sword"))
+                    {
+                        enemySword = child.gameObject;
+                    }
+                }
                 health = EnemyConstants.ENEMY_ELITE_HEALTH;
                 damage = EnemyConstants.ENEMY_ELITE_DAMAGE;
                 speed = EnemyConstants.ENEMY_ELITE_SPEED;
@@ -85,10 +94,72 @@ public class EnemyController : MonoBehaviour
                 SpawnGears(EnemyConstants.ENEMY_NORMAL_GEAR_DROP);
                 break;
             case Enemy.Elite:
+                DropSword();
                 SpawnGears(EnemyConstants.ENEMY_ELITE_GEAR_DROP);
                 break;
             case Enemy.Boss:
                 SpawnGears(EnemyConstants.ENEMY_BOSS_GEAR_DROP);
+                break;
+        }
+    }
+
+    private void DropSword()
+    {
+        SwordsEnum dropType = enemySword.GetComponent<SwordController>().swordType;
+        GameObject sword;
+        switch (dropType)
+        {
+            case SwordsEnum.Heavy:
+                sword = PoolManager.Instance.GetObject("Heavy Sword");
+                if (sword != null)
+                {
+                    GameObject collectableObject = PoolManager.Instance.GetObject("Collectable");
+                    if (collectableObject != null)
+                    {
+                        collectableObject.transform.position = transform.position;
+                        collectableObject.SetActive(true);
+                        collectableObject.GetComponent<CollectableController>().replacementSwordPrefab = sword;
+                    }
+                }
+                break;
+            case SwordsEnum.Long:
+                sword = PoolManager.Instance.GetObject("Long Sword");
+                if (sword != null)
+                {
+                    GameObject collectableObject = PoolManager.Instance.GetObject("Collectable");
+                    if (collectableObject != null)
+                    {
+                        collectableObject.transform.position = transform.position;
+                        collectableObject.SetActive(true);
+                        collectableObject.GetComponent<CollectableController>().replacementSwordPrefab = sword;
+                    }
+                }
+                break;
+            case SwordsEnum.Short:
+                sword = PoolManager.Instance.GetObject("Short Sword");
+                if (sword != null)
+                {
+                    GameObject collectableObject = PoolManager.Instance.GetObject("Collectable");
+                    if (collectableObject != null)
+                    {
+                        collectableObject.transform.position = transform.position;
+                        collectableObject.SetActive(true);
+                        collectableObject.GetComponent<CollectableController>().replacementSwordPrefab = sword;
+                    }
+                }
+                break;
+            case SwordsEnum.Weird:
+                sword = PoolManager.Instance.GetObject("Weird Sword");
+                if (sword != null)
+                {
+                    GameObject collectableObject = PoolManager.Instance.GetObject("Collectable");
+                    if (collectableObject != null)
+                    {
+                        collectableObject.transform.position = transform.position;
+                        collectableObject.SetActive(true);
+                        collectableObject.GetComponent<CollectableController>().replacementSwordPrefab = sword;
+                    }
+                }
                 break;
         }
     }
