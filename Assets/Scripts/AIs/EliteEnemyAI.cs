@@ -8,6 +8,7 @@ public class EliteEnemyAI : MonoBehaviour
     public SwordController playerSword;
     public float attackDistance = 2f; // Distance at which the enemy engages in combat
     public float safeDistanceFromSword = 1.5f; // Safe distance to maintain from the player's sword
+    public float detectionRange = 10f;
 
     void Awake()
     {
@@ -20,7 +21,7 @@ public class EliteEnemyAI : MonoBehaviour
 
     void Update()
     {
-        if (playerTransform != null)
+        if (playerTransform != null && IsPlayerInDetectionRange())
         {
             EngageInCombat();
         }
@@ -64,5 +65,10 @@ public class EliteEnemyAI : MonoBehaviour
     {
         // Attack logic here
         // This could involve triggering an attack animation and dealing damage if in range
+    }
+
+    private bool IsPlayerInDetectionRange()
+    {
+        return Vector3.Distance(transform.position, playerTransform.position) <= detectionRange;
     }
 }

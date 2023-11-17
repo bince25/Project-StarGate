@@ -7,6 +7,7 @@ public class BasicEnemyAI : MonoBehaviour
     public Transform playerTransform;
     private Animator animator;
     private SpriteRenderer spriteRenderer;
+    public float detectionRange = 10f;
 
     void Awake()
     {
@@ -23,7 +24,7 @@ public class BasicEnemyAI : MonoBehaviour
     }
     void Update()
     {
-        if (playerTransform != null)
+        if (playerTransform != null && IsPlayerInDetectionRange())
         {
             agent.SetDestination(playerTransform.position);
 
@@ -44,5 +45,9 @@ public class BasicEnemyAI : MonoBehaviour
     {
         // Flip the sprite based on the direction of movement
         spriteRenderer.flipX = direction < 0;
+    }
+    private bool IsPlayerInDetectionRange()
+    {
+        return Vector3.Distance(transform.position, playerTransform.position) <= detectionRange;
     }
 }

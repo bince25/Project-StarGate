@@ -1,26 +1,27 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using System.Collections.Generic;
 
 public class SoundManager : MonoBehaviour
 {
     public static SoundManager Instance;
 
+    // Sound effect arrays
     public AudioClip[] enemyHitSounds;
     public AudioClip[] enemyDeathSounds;
     public AudioClip[] playerHitSounds;
     public AudioClip[] playerDeathSounds;
     public AudioClip[] playerShootSounds;
-
     public AudioClip[] gearCollectSounds;
-
-    public AudioClip[] music;
-
     public AudioClip[] swordCollideSounds;
     public AudioClip[] swordSwingSounds;
     public AudioClip[] swordLootSounds;
+    public AudioClip[] swordObstacleSounds;
+    public AudioClip[] swordBulletSounds;
+    public AudioClip[] menuSounds;
+    public AudioClip[] music;
 
-    private AudioSource audioSource;
+    private List<AudioSource> audioSources = new List<AudioSource>();
+    private int audioSourcePoolSize = 10; // Adjust as needed
 
     void Awake()
     {
@@ -28,88 +29,95 @@ public class SoundManager : MonoBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
+            InitializeAudioSources();
         }
-        else if (Instance != null)
+        else
         {
             Destroy(gameObject);
             return;
         }
+    }
 
-        audioSource = GetComponent<AudioSource>();
-        if (audioSource == null)
+    private void InitializeAudioSources()
+    {
+        for (int i = 0; i < audioSourcePoolSize; i++)
         {
-            audioSource = gameObject.AddComponent<AudioSource>();
+            AudioSource source = gameObject.AddComponent<AudioSource>();
+            audioSources.Add(source);
         }
     }
 
-    public void PlayEnemyHitSound()
+    private void PlaySound(AudioClip[] clips)
     {
-        audioSource.PlayOneShot(enemyHitSounds[Random.Range(0, enemyHitSounds.Length)]);
+        if (clips.Length == 0) return;
+
+        AudioClip clip = clips[Random.Range(0, clips.Length)];
+        AudioSource source = GetAvailableAudioSource();
+        if (source != null)
+        {
+            source.PlayOneShot(clip);
+        }
     }
 
-    public void PlayEnemyDeathSound()
+    private AudioSource GetAvailableAudioSource()
     {
-        audioSource.PlayOneShot(enemyDeathSounds[Random.Range(0, enemyDeathSounds.Length)]);
+        foreach (var source in audioSources)
+        {
+            if (!source.isPlaying)
+            {
+                return source;
+            }
+        }
+        return null; // Consider expanding the pool size if this happens
     }
 
-    public void PlayPlayerHitSound()
-    {
-        audioSource.PlayOneShot(playerHitSounds[Random.Range(0, playerHitSounds.Length)]);
-    }
+    public void PlayEnemyHitSound() { PlaySound(enemyHitSounds); }
+    public void PlayEnemyDeathSound() { PlaySound(enemyDeathSounds); }
+    public void PlayPlayerHitSound() { PlaySound(playerHitSounds); }
+    public void PlayPlayerDeathSound() { PlaySound(playerDeathSounds); }
+    public void PlayPlayerShootSound() { PlaySound(playerShootSounds); }
+    public void PlayGearCollectSound() { PlaySound(gearCollectSounds); }
+    public void PlaySwordCollideSound() { PlaySound(swordCollideSounds); }
+    public void PlaySwordSwingSound() { PlaySound(swordSwingSounds); }
+    public void PlaySwordLootSound() { PlaySound(swordLootSounds); }
+    public void PlaySwordObstacleSound() { PlaySound(swordObstacleSounds); }
+    public void PlaySwordBulletSound() { PlaySound(swordBulletSounds); }
 
-    public void PlayPlayerDeathSound()
-    {
-        audioSource.PlayOneShot(playerDeathSounds[Random.Range(0, playerDeathSounds.Length)]);
-    }
-
-    public void PlayPlayerShootSound()
-    {
-        audioSource.PlayOneShot(playerShootSounds[Random.Range(0, playerShootSounds.Length)]);
-    }
-
-    public void PlayGearCollectSound()
-    {
-        audioSource.PlayOneShot(gearCollectSounds[Random.Range(0, gearCollectSounds.Length)]);
-    }
-
-    public void PlaySwordCollideSound()
-    {
-        audioSource.PlayOneShot(swordCollideSounds[Random.Range(0, swordCollideSounds.Length)]);
-    }
-
-    public void PlaySwordSwingSound()
-    {
-        audioSource.PlayOneShot(swordSwingSounds[Random.Range(0, swordSwingSounds.Length)]);
-    }
-
-    public void PlaySwordLootSound()
-    {
-        audioSource.PlayOneShot(swordLootSounds[Random.Range(0, swordLootSounds.Length)]);
-    }
-
+    // Music control methods
     public void PlayMusic()
     {
-        audioSource.clip = music[Random.Range(0, music.Length)];
-        audioSource.Play();
+        AudioSource musicSource = GetAvailableAudioSource();
+        if (music.Length > 0 && musicSource != null)
+        {
+            musicSource.clip = music[Random.Range(0, music.Length)];
+            musicSource.Play();
+        }
     }
 
     public void StopMusic()
     {
-        audioSource.Stop();
-    }
-
-    public void PauseMusic()
-    {
-        audioSource.Pause();
-    }
-
-    public void UnpauseMusic()
-    {
-        audioSource.UnPause();
+        foreach (var source in audioSources)
+        {
+            if (source.clip != null && source.isPlaying)
+            {
+                source.Stop();
+            }
+        }
     }
 
     public void SetVolume(float volume)
     {
-        audioSource.volume = volume;
+        foreach (var source in audioSources)
+        {
+            source.volume = volume;
+        }
+    }
+
+    public void SetPitch(float pitch)
+    {
+        foreach (var source in audioSources)
+        {
+            source.pitch = pitch;
+        }
     }
 }

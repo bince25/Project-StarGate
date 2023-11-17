@@ -106,7 +106,7 @@ public class SwordController : MonoBehaviour
     {
         SwordController otherSword = collider.GetComponent<SwordController>();
 
-        HandleSoundEffect();
+        HandleSoundEffect(CollisionType.Sword);
         CreateSparkParticles(collider);
         HandleMomentumCollision(otherSword);
 
@@ -176,13 +176,29 @@ public class SwordController : MonoBehaviour
         }
     }
 
-    private void HandleSoundEffect()
+    private void HandleSoundEffect(CollisionType collisionType)
     {
         if (!gameObject.transform.parent.CompareTag("Player"))
         {
             // Do nothing if the sword is colliding with another sword from the same player
             return;
         }
+        switch (collisionType)
+        {
+            case CollisionType.Sword:
+                SoundManager.Instance.PlaySwordCollideSound();
+                break;
+            case CollisionType.Wall:
+                SoundManager.Instance.PlaySwordObstacleSound();
+                break;
+            case CollisionType.Bullet:
+                SoundManager.Instance.PlaySwordBulletSound();
+                break;
+            default:
+                //SoundManager.Instance.PlaySwordCollideSound();
+                break;
+        }
+
         SoundManager.Instance.PlaySwordCollideSound();
     }
 
@@ -213,7 +229,7 @@ public class SwordController : MonoBehaviour
         ReverseRotation();
         HandleDurabilityChange(CollisionType.Wall);
         HandleWallSpark();
-        HandleSoundEffect();
+        HandleSoundEffect(CollisionType.Wall);
     }
 
     private void HandleObstacleCollision(Collider2D collider)
@@ -227,7 +243,7 @@ public class SwordController : MonoBehaviour
         CreateSparkParticles(collider);
         HandleDurabilityChange(CollisionType.Bullet);
         //bullet.Reflect();
-        HandleSoundEffect();
+        HandleSoundEffect(CollisionType.Bullet);
         collider.gameObject.GetComponent<BulletController>().ReturnToPool();
     }
 
