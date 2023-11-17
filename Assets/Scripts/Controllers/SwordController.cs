@@ -19,9 +19,13 @@ public class SwordController : MonoBehaviour
 
     private Vector3 contact = new Vector3();
 
+    private bool isPlayerSword = false;
+
     void Start()
     {
         currentRotationSpeed = defaultRotationSpeed;
+        edgeOfSword = GetComponentInChildren<Transform>().position;
+        isPlayerSword = transform.parent.gameObject.CompareTag("Player");
     }
 
     void Update()
@@ -67,13 +71,12 @@ public class SwordController : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        Debug.Log("Sword collided with " + other.name);
         // Check if the sword collided with another sword
         if (other.CompareTag("Sword"))
         {
             HandleSwordCollision(other);
         }
-        else if (other.CompareTag("Enemy"))
+        else if (other.CompareTag("Enemy") && isPlayerSword)
         {
             HandleEnemyCollision(other);
         }
@@ -126,6 +129,10 @@ public class SwordController : MonoBehaviour
             ChangeSpeedTemporarily(defaultRotationSpeed + Math.Abs(momentumDifference) / weight, 0.7f);
             ReverseRotation();
         }
+        else
+        {
+            ReverseRotation();
+        }
     }
 
     private void CreateSparkParticles(Collider2D collider)
@@ -134,7 +141,7 @@ public class SwordController : MonoBehaviour
         contact = collider.bounds.ClosestPoint(collider.transform.position);
         // Change the rotation direction
         // Play the particle effect
-        if (collisionParticles != null && this.transform.parent.gameObject.tag == "Player")
+        if (collisionParticles != null && isPlayerSword)
         {
             if (contact != null)
             {
@@ -152,12 +159,12 @@ public class SwordController : MonoBehaviour
 
     private void HandleWallSpark()
     {
+        edgeOfSword = GetComponentInChildren<Transform>().position;
         // Create spark at the end of the sword
-        if (collisionParticles != null && this.transform.parent.gameObject.tag == "Player")
+        if (collisionParticles != null && isPlayerSword)
         {
             if (edgeOfSword != null)
             {
-                Debug.Log("Contact point: " + edgeOfSword);
                 GameObject particles = Instantiate(collisionParticles, edgeOfSword, Quaternion.identity);
 
                 // Get the particle system component from the instantiated prefab
@@ -205,7 +212,7 @@ public class SwordController : MonoBehaviour
     {
         ReverseRotation();
         HandleDurabilityChange(CollisionType.Wall);
-        CreateSparkParticles(collider);
+        HandleWallSpark();
         HandleSoundEffect();
     }
 
