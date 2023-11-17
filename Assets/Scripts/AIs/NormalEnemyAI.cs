@@ -15,6 +15,7 @@ public class NormalEnemyAI : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         agent.updateRotation = false;
         agent.updateUpAxis = false;
+        playerTransform = PlayerController.Instance.transform;
     }
 
     void Start()

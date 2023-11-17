@@ -15,6 +15,8 @@ public class EliteEnemyAI : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         agent.updateRotation = false;
         agent.updateUpAxis = false;
+        playerTransform = PlayerController.Instance.transform;
+        playerSword = playerTransform.GetComponentInChildren<SwordController>();
     }
 
     void Update()

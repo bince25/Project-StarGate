@@ -80,7 +80,7 @@ public class PlayerController : MonoBehaviour
         {
             other.gameObject.GetComponent<GearController>().GetCollected();
         }
-        else if (other.CompareTag("Sword"))
+        else if (other.CompareTag("Sword") && !other.transform.parent.gameObject.CompareTag("Player"))
         {
             Die();
         }
