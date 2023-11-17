@@ -14,7 +14,10 @@ public class SwordController : MonoBehaviour
     public float durability = SwordConstants.SWORD_DEFAULT_DURABILITY;
     public float damage = SwordConstants.SWORD_DEFAULT_DAMAGE;
 
-    private ContactPoint2D[] contacts = new ContactPoint2D[1];
+    [SerializeField]
+    private Vector3 edgeOfSword = new Vector3();
+
+    private Vector3 contact = new Vector3();
 
     void Start()
     {
@@ -62,46 +65,46 @@ public class SwordController : MonoBehaviour
         currentRotationSpeed = defaultRotationSpeed; // ensure it's set back to default
     }
 
-    void OnCollisionEnter2D(Collision2D other)
+    void OnTriggerEnter2D(Collider2D other)
     {
-        Debug.Log("Sword collided with " + other.collider.name);
+        Debug.Log("Sword collided with " + other.name);
         // Check if the sword collided with another sword
-        if (other.collider.CompareTag("Sword"))
+        if (other.CompareTag("Sword"))
         {
             HandleSwordCollision(other);
         }
-        else if (other.collider.CompareTag("Enemy"))
+        else if (other.CompareTag("Enemy"))
         {
             HandleEnemyCollision(other);
         }
-        else if (other.collider.CompareTag("Wall"))
+        else if (other.CompareTag("Wall"))
         {
             HandleWallCollision(other);
         }
-        else if (other.collider.CompareTag("Obstacle"))
+        else if (other.CompareTag("Obstacle"))
         {
             HandleObstacleCollision(other);
         }
-        else if (other.collider.CompareTag("Player"))
+        else if (other.CompareTag("Player"))
         {
             // Do nothing
         }
-        else if (other.collider.CompareTag("Bullet"))
+        else if (other.CompareTag("Bullet"))
         {
             HandleBulletCollision(other);
         }
         else
         {
-            Debug.LogWarning("Sword collided with an unknown object: " + other.collider.name);
+            Debug.LogWarning("Sword collided with an unknown object: " + other.name);
         }
     }
 
-    private void HandleSwordCollision(Collision2D collision)
+    private void HandleSwordCollision(Collider2D collider)
     {
-        SwordController otherSword = collision.collider.GetComponent<SwordController>();
+        SwordController otherSword = collider.GetComponent<SwordController>();
 
         HandleSoundEffect();
-        CreateSparkParticles(collision);
+        CreateSparkParticles(collider);
         HandleMomentumCollision(otherSword);
 
         HandleDurabilityChange(CollisionType.Sword);
@@ -125,19 +128,37 @@ public class SwordController : MonoBehaviour
         }
     }
 
-    private void CreateSparkParticles(Collision2D collision)
+    private void CreateSparkParticles(Collider2D collider)
     {
         // Get the contact points from the collision
-        collision.GetContacts(contacts);
+        contact = collider.bounds.ClosestPoint(collider.transform.position);
         // Change the rotation direction
         // Play the particle effect
         if (collisionParticles != null && this.transform.parent.gameObject.tag == "Player")
         {
-            if (contacts.Length > 0)
+            if (contact != null)
             {
-                Vector2 contactPoint = contacts[0].point;
-                Debug.Log("Contact point: " + contactPoint);
-                GameObject particles = Instantiate(collisionParticles, contactPoint, Quaternion.identity);
+                Debug.Log("Contact point: " + contact);
+                GameObject particles = Instantiate(collisionParticles, contact, Quaternion.identity);
+
+                // Get the particle system component from the instantiated prefab
+                ParticleSystem particlesSystem = particles.GetComponent<ParticleSystem>();
+
+                // Destroy the instantiated object after the duration of the particle system
+                Destroy(particles, particlesSystem.main.duration + 0.3f);
+            }
+        }
+    }
+
+    private void HandleWallSpark()
+    {
+        // Create spark at the end of the sword
+        if (collisionParticles != null && this.transform.parent.gameObject.tag == "Player")
+        {
+            if (edgeOfSword != null)
+            {
+                Debug.Log("Contact point: " + edgeOfSword);
+                GameObject particles = Instantiate(collisionParticles, edgeOfSword, Quaternion.identity);
 
                 // Get the particle system component from the instantiated prefab
                 ParticleSystem particlesSystem = particles.GetComponent<ParticleSystem>();
@@ -158,9 +179,9 @@ public class SwordController : MonoBehaviour
         SoundManager.Instance.PlaySwordCollideSound();
     }
 
-    private void HandleEnemyCollision(Collision2D collision)
+    private void HandleEnemyCollision(Collider2D collider)
     {
-        EnemyController enemy = collision.collider.GetComponent<EnemyController>();
+        EnemyController enemy = collider.GetComponent<EnemyController>();
         enemy.TakeDamage(damage);
 
         switch (enemy.enemyType)
@@ -180,23 +201,24 @@ public class SwordController : MonoBehaviour
         }
     }
 
-    private void HandleWallCollision(Collision2D collision)
+    private void HandleWallCollision(Collider2D collider)
     {
         ReverseRotation();
         HandleDurabilityChange(CollisionType.Wall);
-        CreateSparkParticles(collision);
+        CreateSparkParticles(collider);
         HandleSoundEffect();
     }
 
-    private void HandleObstacleCollision(Collision2D collision)
+    private void HandleObstacleCollision(Collider2D collider)
     {
         ReverseRotation();
         HandleDurabilityChange(CollisionType.Obstacle);
     }
 
-    private void HandleBulletCollision(Collision2D collision)
+    private void HandleBulletCollision(Collider2D collider)
     {
-        CreateSparkParticles(collision);
+        CreateSparkParticles(collider);
+        HandleDurabilityChange(CollisionType.Bullet);
         //bullet.Reflect();
         HandleSoundEffect();
     }

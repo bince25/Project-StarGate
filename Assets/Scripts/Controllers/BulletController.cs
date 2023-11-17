@@ -35,6 +35,6 @@ public class BulletController : MonoBehaviour
 
     public void ReturnToPool()
     {
-        PoolManager.Instance.ReturnObject("Bullet", gameObject, 0.05f);
+        PoolManager.Instance.ReturnObject("Bullet", gameObject);
     }
 }
