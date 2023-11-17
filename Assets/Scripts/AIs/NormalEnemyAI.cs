@@ -9,6 +9,8 @@ public class NormalEnemyAI : MonoBehaviour
     public float minDistance = 5f;
     public float detectionRange = 15f;
     public float shootingCooldown = 2f;
+    private Animator animator;
+    private SpriteRenderer spriteRenderer;
 
     private EnemyController enemyController;
     private float lastShootTime;
@@ -20,10 +22,16 @@ public class NormalEnemyAI : MonoBehaviour
         agent.updateUpAxis = false;
         enemyController = GetComponent<EnemyController>();
         lastShootTime = -shootingCooldown; // Initialize so that enemy can shoot immediately
+
+        // Get the Animator component
+        animator = GetComponent<Animator>();
+
+        // Get the SpriteRenderer component
+        spriteRenderer = GetComponent<SpriteRenderer>();
     }
+
     void Start()
     {
-
         playerTransform = PlayerController.Instance.transform;
     }
     void Update()
@@ -45,9 +53,23 @@ public class NormalEnemyAI : MonoBehaviour
             {
                 agent.SetDestination(playerTransform.position); // Follow the player
             }
+            // Set IsMoving parameter based on agent's velocity
+            bool isMoving = agent.velocity.magnitude > 0.1f;
+            animator.SetBool("IsMoving", isMoving);
+            animator.SetFloat("Speed", agent.velocity.magnitude);
+            // Flip the sprite based on the direction of movement
+            if (isMoving)
+            {
+                UpdateSpriteFlip(agent.velocity.x);
+            }
         }
     }
 
+    void UpdateSpriteFlip(float direction)
+    {
+        // Flip the sprite based on the direction of movement
+        spriteRenderer.flipX = direction < 0;
+    }
     private void MoveAwayFromPlayer()
     {
         Vector3 dirToPlayer = transform.position - playerTransform.position;
