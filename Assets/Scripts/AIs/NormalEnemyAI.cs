@@ -1,32 +1,27 @@
 using UnityEngine;
-using UnityEngine.AI;
+using Pathfinding;
 
 public class NormalEnemyAI : MonoBehaviour
 {
-    private NavMeshAgent agent;
     public Transform playerTransform;
     public float shootingDistance = 10f;
     public float minDistance = 5f;
     public float detectionRange = 15f;
     public float shootingCooldown = 2f;
+
     private Animator animator;
     private SpriteRenderer spriteRenderer;
-
     private EnemyController enemyController;
+    private AILerp aiLerp;
     private float lastShootTime;
 
     void Awake()
     {
-        agent = GetComponent<NavMeshAgent>();
-        agent.updateRotation = false;
-        agent.updateUpAxis = false;
+        aiLerp = GetComponent<AILerp>();
         enemyController = GetComponent<EnemyController>();
         lastShootTime = -shootingCooldown; // Initialize so that enemy can shoot immediately
 
-        // Get the Animator component
         animator = GetComponent<Animator>();
-
-        // Get the SpriteRenderer component
         spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
@@ -34,6 +29,7 @@ public class NormalEnemyAI : MonoBehaviour
     {
         playerTransform = PlayerController.Instance.transform;
     }
+
     void Update()
     {
         if (playerTransform != null && IsPlayerInDetectionRange())
@@ -45,36 +41,44 @@ public class NormalEnemyAI : MonoBehaviour
             }
             else if (distance <= shootingDistance && Time.time > lastShootTime + shootingCooldown)
             {
-                agent.SetDestination(transform.position); // Stop and shoot
+                // Stop and shoot
+                aiLerp.canMove = false;
                 enemyController.ShootAtPlayer();
                 lastShootTime = Time.time;
             }
             else
             {
-                agent.SetDestination(playerTransform.position); // Follow the player
+                // Follow the player
+                aiLerp.destination = playerTransform.position;
+                aiLerp.canMove = true;
             }
-            // Set IsMoving parameter based on agent's velocity
-            bool isMoving = agent.velocity.magnitude > 0.1f;
-            animator.SetBool("IsMoving", isMoving);
-            animator.SetFloat("Speed", agent.velocity.magnitude);
-            // Flip the sprite based on the direction of movement
-            if (isMoving)
-            {
-                UpdateSpriteFlip(agent.velocity.x);
-            }
+
+            UpdateAnimation();
+        }
+    }
+
+    void UpdateAnimation()
+    {
+        bool isMoving = aiLerp.canMove && aiLerp.velocity.magnitude > 0.1f;
+        animator.SetBool("IsMoving", isMoving);
+        animator.SetFloat("Speed", aiLerp.velocity.magnitude);
+
+        if (isMoving)
+        {
+            UpdateSpriteFlip(aiLerp.velocity.x);
         }
     }
 
     void UpdateSpriteFlip(float direction)
     {
-        // Flip the sprite based on the direction of movement
         spriteRenderer.flipX = direction < 0;
     }
+
     private void MoveAwayFromPlayer()
     {
-        Vector3 dirToPlayer = transform.position - playerTransform.position;
-        Vector3 newPos = transform.position + dirToPlayer;
-        agent.SetDestination(newPos);
+        Vector3 dirToPlayer = (transform.position - playerTransform.position).normalized;
+        aiLerp.destination = transform.position + dirToPlayer * minDistance;
+        aiLerp.canMove = true;
     }
 
     private bool IsPlayerInDetectionRange()

@@ -1,27 +1,27 @@
 using UnityEngine;
-using UnityEngine.AI;
+using Pathfinding;
 
 public class EliteEnemyAI : MonoBehaviour
 {
-    private NavMeshAgent agent;
     public Transform playerTransform;
     public SwordController playerSword;
-    public float attackDistance = 2f; // Distance at which the enemy engages in combat
-    public float safeDistanceFromSword = 1.5f; // Safe distance to maintain from the player's sword
+    public float attackDistance = 2f;
+    public float safeDistanceFromSword = 1.5f;
     public float detectionRange = 10f;
+
+    private IAstarAI ai;
 
     void Awake()
     {
-        agent = GetComponent<NavMeshAgent>();
-        agent.updateRotation = false;
-        agent.updateUpAxis = false;
+        ai = GetComponent<IAstarAI>();
     }
+
     void Start()
     {
         playerTransform = PlayerController.Instance.transform;
-
         playerSword = playerTransform.GetComponentInChildren<SwordController>();
     }
+
     void Update()
     {
         if (playerTransform != null && IsPlayerInDetectionRange())
@@ -39,34 +39,31 @@ public class EliteEnemyAI : MonoBehaviour
 
         if (distanceToPlayer > attackDistance)
         {
-            // Move towards the player
-            agent.SetDestination(playerTransform.position);
+            ai.destination = playerTransform.position;
+            ai.SearchPath();
         }
         else if (isSwordThreatening)
         {
-            // Try to move to a position that avoids the sword
             AvoidPlayerSword();
         }
         else
         {
-            // Engage in combat, attack player
             AttackPlayer();
         }
     }
 
     private void AvoidPlayerSword()
     {
-        // Logic to find a safer position away from the player's sword
-        // This could involve calculating a position to the side or behind the player
         Vector3 dirToPlayer = (transform.position - playerTransform.position).normalized;
-        Vector3 sidestepDirection = Vector3.Cross(dirToPlayer, Vector3.up); // Sidestep
-        Vector3 newPos = transform.position + sidestepDirection * agent.speed * Time.deltaTime;
-        agent.SetDestination(newPos);
+        Vector3 sidestepDirection = Vector3.Cross(dirToPlayer, Vector3.up);
+        Vector3 newPos = transform.position + sidestepDirection * (ai.maxSpeed * Time.deltaTime);
+        ai.destination = newPos;
+        ai.SearchPath();
     }
 
     private void AttackPlayer()
     {
-        // Attack logic here
+        // Implement attack logic here
         // This could involve triggering an attack animation and dealing damage if in range
     }
 

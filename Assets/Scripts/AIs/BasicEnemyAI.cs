@@ -1,55 +1,51 @@
+using Pathfinding;
 using UnityEngine;
-using UnityEngine.AI;
 
 public class BasicEnemyAI : MonoBehaviour
 {
-    private NavMeshAgent agent;
     public Transform playerTransform;
+    public float detectionRange = 10f;
+
+    private IAstarAI ai;
     private Animator animator;
     private SpriteRenderer spriteRenderer;
-    public float detectionRange = 10f;
 
     void Awake()
     {
-        agent = GetComponent<NavMeshAgent>();
-        agent.updateRotation = false;
-        agent.updateUpAxis = false;
+        ai = GetComponent<IAstarAI>();
 
-        // Get the Animator component
         animator = GetComponent<Animator>();
-
-        // Get the SpriteRenderer component
         spriteRenderer = GetComponent<SpriteRenderer>();
     }
+
     void Start()
     {
-
         playerTransform = PlayerController.Instance.transform;
     }
+
     void Update()
     {
         if (playerTransform != null && IsPlayerInDetectionRange())
         {
-            agent.SetDestination(playerTransform.position);
+            ai.destination = playerTransform.position;
+            ai.SearchPath();
 
-            // Set IsMoving parameter based on agent's velocity
-            bool isMoving = agent.velocity.magnitude > 0.1f;
+            bool isMoving = ai.velocity.magnitude > 0.1f;
             animator.SetBool("IsMoving", isMoving);
-            animator.SetFloat("Speed", agent.velocity.magnitude);
+            animator.SetFloat("Speed", ai.velocity.magnitude);
 
-            // Flip the sprite based on the direction of movement
             if (isMoving)
             {
-                UpdateSpriteFlip(agent.velocity.x);
+                UpdateSpriteFlip(ai.velocity.x);
             }
         }
     }
 
     void UpdateSpriteFlip(float direction)
     {
-        // Flip the sprite based on the direction of movement
         spriteRenderer.flipX = direction < 0;
     }
+
     private bool IsPlayerInDetectionRange()
     {
         return Vector3.Distance(transform.position, playerTransform.position) <= detectionRange;
