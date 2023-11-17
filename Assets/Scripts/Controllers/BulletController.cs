@@ -17,9 +17,9 @@ public class BulletController : MonoBehaviour
 
     }
 
-    void OnCollisionEnter2D(Collision2D other)
+    void OnTriggerEnter2D(Collider2D other)
     {
-        ReturnToPool();
+        if (other.gameObject.CompareTag("Wall")) ReturnToPool();
     }
 
     public void Reflect()

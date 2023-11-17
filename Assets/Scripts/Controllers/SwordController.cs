@@ -228,6 +228,7 @@ public class SwordController : MonoBehaviour
         HandleDurabilityChange(CollisionType.Bullet);
         //bullet.Reflect();
         HandleSoundEffect();
+        collider.gameObject.GetComponent<BulletController>().ReturnToPool();
     }
 
     private void HandleDurabilityChange(CollisionType collisionType)
