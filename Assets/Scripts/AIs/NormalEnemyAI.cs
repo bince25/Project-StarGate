@@ -8,6 +8,8 @@ public class NormalEnemyAI : MonoBehaviour
     public float shootingDistance = 10f;
     public float minDistance = 5f; // Minimum distance to keep from the player
 
+    public float detectionRange = 15f;
+
     void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
@@ -21,7 +23,7 @@ public class NormalEnemyAI : MonoBehaviour
 
     void Update()
     {
-        if (playerTransform != null)
+        if (playerTransform != null && IsPlayerInDetectionRange())
         {
             float distance = Vector3.Distance(transform.position, playerTransform.position);
             if (distance < minDistance)
@@ -44,5 +46,10 @@ public class NormalEnemyAI : MonoBehaviour
                 agent.SetDestination(playerTransform.position);
             }
         }
+    }
+
+    private bool IsPlayerInDetectionRange()
+    {
+        return Vector3.Distance(transform.position, playerTransform.position) <= detectionRange;
     }
 }

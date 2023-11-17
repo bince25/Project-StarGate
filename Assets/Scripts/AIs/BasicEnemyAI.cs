@@ -5,6 +5,7 @@ public class BasicEnemyAI : MonoBehaviour
 {
     private NavMeshAgent agent;
     public Transform playerTransform;
+    public float detectionRange = 10f;
 
     void Awake()
     {
@@ -19,9 +20,14 @@ public class BasicEnemyAI : MonoBehaviour
 
     void Update()
     {
-        if (playerTransform != null)
+        if (playerTransform != null && IsPlayerInDetectionRange())
         {
             agent.SetDestination(playerTransform.position);
         }
+    }
+
+    private bool IsPlayerInDetectionRange()
+    {
+        return Vector3.Distance(transform.position, playerTransform.position) <= detectionRange;
     }
 }
