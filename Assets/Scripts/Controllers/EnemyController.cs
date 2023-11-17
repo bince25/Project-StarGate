@@ -39,14 +39,9 @@ public class EnemyController : MonoBehaviour
                 speed = EnemyConstants.ENEMY_BOSS_SPEED;
                 break;
         }
-
-        if (enemyType == Enemy.Normal)
-        {
-            InvokeRepeating("ShootAtPlayer", shootingInterval, shootingInterval);
-        }
     }
 
-    private void ShootAtPlayer()
+    public void ShootAtPlayer()
     {
         GameObject bullet = PoolManager.Instance.GetObject("Bullet");
         if (bullet != null)

@@ -6,9 +6,12 @@ public class NormalEnemyAI : MonoBehaviour
     private NavMeshAgent agent;
     public Transform playerTransform;
     public float shootingDistance = 10f;
-    public float minDistance = 5f; // Minimum distance to keep from the player
-
+    public float minDistance = 5f;
     public float detectionRange = 15f;
+    public float shootingCooldown = 2f;
+
+    private EnemyController enemyController;
+    private float lastShootTime;
 
     void Awake()
     {
@@ -16,10 +19,8 @@ public class NormalEnemyAI : MonoBehaviour
         agent.updateRotation = false;
         agent.updateUpAxis = false;
         playerTransform = PlayerController.Instance.transform;
-    }
-
-    void Start()
-    {
+        enemyController = GetComponent<EnemyController>();
+        lastShootTime = -shootingCooldown; // Initialize so that enemy can shoot immediately
     }
 
     void Update()
@@ -29,24 +30,26 @@ public class NormalEnemyAI : MonoBehaviour
             float distance = Vector3.Distance(transform.position, playerTransform.position);
             if (distance < minDistance)
             {
-                // Move away from the player
-                Vector3 dirToPlayer = transform.position - playerTransform.position;
-                Vector3 newPos = transform.position + dirToPlayer;
-
-                agent.SetDestination(newPos);
+                MoveAwayFromPlayer();
             }
-            else if (distance <= shootingDistance)
+            else if (distance <= shootingDistance && Time.time > lastShootTime + shootingCooldown)
             {
-                // Stop and shoot
-                agent.SetDestination(transform.position);
-                // Call shooting method here
+                agent.SetDestination(transform.position); // Stop and shoot
+                enemyController.ShootAtPlayer();
+                lastShootTime = Time.time;
             }
             else
             {
-                // Follow the player
-                agent.SetDestination(playerTransform.position);
+                agent.SetDestination(playerTransform.position); // Follow the player
             }
         }
+    }
+
+    private void MoveAwayFromPlayer()
+    {
+        Vector3 dirToPlayer = transform.position - playerTransform.position;
+        Vector3 newPos = transform.position + dirToPlayer;
+        agent.SetDestination(newPos);
     }
 
     private bool IsPlayerInDetectionRange()

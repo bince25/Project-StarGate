@@ -9,12 +9,19 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private GameObject spritesObject;
     private Animator legsAnimator;
+    private Rigidbody2D rb;
 
     void Awake()
     {
         if (Instance == null)
         {
             Instance = this;
+        }
+
+        rb = GetComponent<Rigidbody2D>();
+        if (rb == null)
+        {
+            rb = gameObject.AddComponent<Rigidbody2D>();
         }
     }
 
@@ -32,29 +39,23 @@ public class PlayerController : MonoBehaviour
         float vertical = Input.GetAxis("Vertical");
 
         // Calculate movement vector
-        Vector3 movement = new Vector3(horizontal, vertical, 0f).normalized;
+        Vector2 movement = new Vector2(horizontal, vertical).normalized;
 
+        // Set parameters for Animator based on movement
+        legsAnimator.SetBool("IsWalking", movement.magnitude >= 0.1f);
+        legsAnimator.SetFloat("Speed", movement.magnitude);
 
-
-        // Check if there is any input
-        if (movement.magnitude >= 0.1f)
-        {
-            // Calculate movement vector and move the character without changing rotation
-            Vector3 moveDir = new Vector3(horizontal, vertical, 0f).normalized;
-            transform.Translate(moveDir * moveSpeed * Time.deltaTime, Space.World);
-
-            // Set parameters for Animator
-            legsAnimator.SetBool("IsWalking", true);
-            legsAnimator.SetFloat("Speed", movement.magnitude);
-        }
-        else
-        {
-            // If there is no input, set parameters for idle
-            legsAnimator.SetBool("IsWalking", false);
-            legsAnimator.SetFloat("Speed", 0f);
-        }
         UpdateSpriteFlip(horizontal);
     }
+
+    void FixedUpdate()
+    {
+        // Apply movement in FixedUpdate for physics consistency
+        Vector2 moveInput = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+        Vector2 moveVelocity = moveInput.normalized * moveSpeed;
+        rb.velocity = moveVelocity;
+    }
+
     void UpdateSpriteFlip(float horizontal)
     {
         // Flip the sprite based on the direction of movement
