@@ -10,6 +10,7 @@ public class PlayerController : MonoBehaviour
     private GameObject spritesObject;
     private Animator legsAnimator;
     private Rigidbody2D rb;
+    private GameObject playersSword;
 
     void Awake()
     {
@@ -29,6 +30,14 @@ public class PlayerController : MonoBehaviour
     {
         // Get the Animator component from the "Legs" child object
         legsAnimator = spritesObject.transform.GetChild(spritesObject.transform.childCount - 1).GetComponent<Animator>();
+        foreach (Transform child in transform)
+        {
+            if (child.CompareTag("Sword"))
+            {
+                playersSword = child.gameObject;
+                Debug.Log("Found sword!: ", playersSword);
+            }
+        }
     }
     public float moveSpeed = 5f;
 
@@ -100,5 +109,18 @@ public class PlayerController : MonoBehaviour
         isDead = true;
         SoundManager.Instance.PlayPlayerDeathSound();
         gameObject.SetActive(false);
+    }
+    public void SwitchSwordPrefab(GameObject newSwordPrefab)
+    {
+        // Destroy the current sword prefab
+        Destroy(playersSword);
+
+        // Instantiate the new sword prefab as a child of the player
+        Vector3 swordPosition = new Vector3(transform.position.x, transform.position.y + 2.5f, transform.position.z);
+        GameObject newSword = Instantiate(newSwordPrefab, swordPosition, Quaternion.identity);
+        newSword.transform.parent = transform;
+
+        // Update the currentSwordPrefab reference
+        playersSword = newSwordPrefab;
     }
 }
