@@ -14,26 +14,11 @@ public class SwordController : MonoBehaviour
     public float durability = SwordConstants.SWORD_DEFAULT_DURABILITY;
     public float damage = SwordConstants.SWORD_DEFAULT_DAMAGE;
 
-    // SOUND EFFECTS
-    public AudioClip collisionSound; // Add this variable
-
-    private AudioSource audioSource; // Reference to the AudioSource component
-
     private ContactPoint2D[] contacts = new ContactPoint2D[1];
 
     void Start()
     {
         currentRotationSpeed = defaultRotationSpeed;
-
-        // Get the AudioSource component or add one if not present
-        audioSource = GetComponent<AudioSource>();
-        if (audioSource == null)
-        {
-            audioSource = gameObject.AddComponent<AudioSource>();
-        }
-
-        // Set the collision sound clip
-        audioSource.clip = collisionSound;
     }
 
     void Update()
@@ -97,6 +82,18 @@ public class SwordController : MonoBehaviour
         {
             HandleObstacleCollision(other);
         }
+        else if (other.collider.CompareTag("Player"))
+        {
+            // Do nothing
+        }
+        else if (other.collider.CompareTag("Bullet"))
+        {
+            HandleBulletCollision(other);
+        }
+        else
+        {
+            Debug.LogWarning("Sword collided with an unknown object: " + other.collider.name);
+        }
     }
 
     private void HandleSwordCollision(Collision2D collision)
@@ -153,10 +150,12 @@ public class SwordController : MonoBehaviour
 
     private void HandleSoundEffect()
     {
-        if (collisionSound != null && audioSource != null)
+        if (!gameObject.transform.parent.CompareTag("Player"))
         {
-            audioSource.Play();
+            // Do nothing if the sword is colliding with another sword from the same player
+            return;
         }
+        SoundManager.Instance.PlaySwordCollideSound();
     }
 
     private void HandleEnemyCollision(Collision2D collision)
@@ -185,12 +184,21 @@ public class SwordController : MonoBehaviour
     {
         ReverseRotation();
         HandleDurabilityChange(CollisionType.Wall);
+        CreateSparkParticles(collision);
+        HandleSoundEffect();
     }
 
     private void HandleObstacleCollision(Collision2D collision)
     {
         ReverseRotation();
         HandleDurabilityChange(CollisionType.Obstacle);
+    }
+
+    private void HandleBulletCollision(Collision2D collision)
+    {
+        CreateSparkParticles(collision);
+        //bullet.Reflect();
+        HandleSoundEffect();
     }
 
     private void HandleDurabilityChange(CollisionType collisionType)
@@ -211,6 +219,15 @@ public class SwordController : MonoBehaviour
                 break;
             case CollisionType.Sword:
                 durability -= SwordConstants.OTHER_SWORD_DEFAULT_DURABILITY_LOSS;
+                break;
+            case CollisionType.Wall:
+                durability -= SwordConstants.OTHER_SWORD_DEFAULT_DURABILITY_LOSS;
+                break;
+            case CollisionType.Obstacle:
+                durability -= SwordConstants.OTHER_SWORD_DEFAULT_DURABILITY_LOSS;
+                break;
+            case CollisionType.Bullet:
+                durability -= SwordConstants.BULLET_DEFAULT_DURABILITY_LOSS;
                 break;
         }
     }

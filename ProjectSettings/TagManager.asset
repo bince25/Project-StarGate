@@ -9,6 +9,7 @@ TagManager:
   - Gear
   - Wall
   - Obstacle
+  - Bullet
   layers:
   - Default
   - TransparentFX

@@ -64,4 +64,15 @@ public class PoolManager : MonoBehaviour
 
         poolDictionary[tag].ReturnObject(objectToReturn);
     }
+
+    public void ReturnObject(string tag, GameObject objectToReturn, float time)
+    {
+        StartCoroutine(ReturnObjectCoroutine(tag, objectToReturn, time));
+    }
+
+    private IEnumerator<WaitForSeconds> ReturnObjectCoroutine(string tag, GameObject objectToReturn, float time)
+    {
+        yield return new WaitForSeconds(time);
+        poolDictionary[tag].ReturnObject(objectToReturn);
+    }
 }

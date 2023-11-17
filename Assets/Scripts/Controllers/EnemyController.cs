@@ -10,17 +10,12 @@ public class EnemyController : MonoBehaviour
     public float speed = 1f;
     public Enemy enemyType = Enemy.Basic;
 
-    private AudioSource audioSource;
-    public AudioClip deathSound;
+    public Transform bulletSpawnPoint; // Set this in the Unity Inspector
+    public float bulletSpeed = 10f;
+    public float shootingInterval = 2f;
 
     void Start()
     {
-        audioSource = GetComponent<AudioSource>();
-        if (audioSource == null)
-        {
-            audioSource = gameObject.AddComponent<AudioSource>();
-        }
-        audioSource.clip = deathSound;
         switch (enemyType)
         {
             case Enemy.Basic:
@@ -44,16 +39,39 @@ public class EnemyController : MonoBehaviour
                 speed = EnemyConstants.ENEMY_BOSS_SPEED;
                 break;
         }
+
+        if (enemyType == Enemy.Normal)
+        {
+            InvokeRepeating("ShootAtPlayer", shootingInterval, shootingInterval);
+        }
     }
 
-    void Update()
+    private void ShootAtPlayer()
     {
+        GameObject bullet = PoolManager.Instance.GetObject("Bullet");
+        if (bullet != null)
+        {
+            bullet.transform.position = bulletSpawnPoint.position;
+            bullet.SetActive(true);
 
+            Rigidbody2D bulletRigidbody = bullet.GetComponent<Rigidbody2D>();
+            if (bulletRigidbody != null)
+            {
+                Vector2 direction = (PlayerController.Instance.transform.position - transform.position).normalized; // Direction towards the player
+                bulletRigidbody.velocity = direction * bulletSpeed;
+
+                // Calculate the angle in degrees, add 90 degrees to correct the orientation, and rotate the bullet
+                float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg + 90;
+                bullet.transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
+            }
+            // Optionally return the bullet to the pool after a set time
+            //PoolManager.Instance.ReturnObject("Bullet", bullet, 5f); // Return after 5 seconds
+        }
     }
 
     public void TakeDamage(float damage)
     {
-        audioSource.Play();
+        SoundManager.Instance.PlayEnemyHitSound();
         health -= damage;
         if (health <= 0)
         {
@@ -115,14 +133,7 @@ public class EnemyController : MonoBehaviour
         dead = true;
         DropGears();
 
-        if (deathSound != null && audioSource != null)
-        {
-            audioSource.Play();
-            Destroy(gameObject, 0.2f);
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
+        SoundManager.Instance.PlayEnemyDeathSound();
+        Destroy(gameObject, 0.2f);
     }
 }

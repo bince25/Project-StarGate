@@ -6,5 +6,6 @@ public enum CollisionType
     EnemyNormal,
     EnemyElite,
     EnemyBoss,
-    Obstacle
+    Obstacle,
+    Bullet
 }

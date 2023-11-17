@@ -4,6 +4,16 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    public static PlayerController Instance;
+    private bool isDead = false;
+
+    void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+    }
     public float moveSpeed = 5f;
 
     void Update()
@@ -28,7 +38,22 @@ public class PlayerController : MonoBehaviour
     {
         if (other.collider.CompareTag("Gear"))
         {
-            other.collider.GetComponent<GearController>().GetCollected();
+            other.gameObject.GetComponent<GearController>().GetCollected();
         }
+        else if (other.collider.CompareTag("Bullet"))
+        {
+            Die();
+        }
+    }
+
+    void Die()
+    {
+        if (isDead)
+        {
+            return;
+        }
+        isDead = true;
+        SoundManager.Instance.PlayPlayerDeathSound();
+        gameObject.SetActive(false);
     }
 }

@@ -4,15 +4,11 @@ using UnityEngine;
 
 public class GearController : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
 
     public void GetCollected()
     {
+        SoundManager.Instance.PlayGearCollectSound();
         ResourceManager.Instance.AddGear(1);
-        PoolManager.Instance.ReturnObject("Gear", gameObject);
+        PoolManager.Instance.ReturnObject("Gear", gameObject, 0.05f);
     }
 }
