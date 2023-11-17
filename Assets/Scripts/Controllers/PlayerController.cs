@@ -6,6 +6,9 @@ public class PlayerController : MonoBehaviour
 {
     public static PlayerController Instance;
     private bool isDead = false;
+
+    [SerializeField]
+    private bool godMode = false;
     [SerializeField]
     private GameObject spritesObject;
     private Animator legsAnimator;
@@ -35,7 +38,6 @@ public class PlayerController : MonoBehaviour
             if (child.CompareTag("Sword"))
             {
                 playersSword = child.gameObject;
-                Debug.Log("Found sword!: ", playersSword);
             }
         }
     }
@@ -102,6 +104,10 @@ public class PlayerController : MonoBehaviour
 
     void Die()
     {
+        if (godMode)
+        {
+            return;
+        }
         if (isDead)
         {
             return;

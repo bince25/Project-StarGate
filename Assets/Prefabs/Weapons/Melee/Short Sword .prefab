@@ -136,6 +136,7 @@ MonoBehaviour:
   weight: 1
   defaultRotationSpeed: 300
   collisionParticles: {fileID: 7114707331762081372, guid: dc4300f7519e15f419b671362aac2371, type: 3}
+  swordType: 2
   durability: 100
   damage: 1
   edgeOfSword: {x: 0, y: 0, z: 0}

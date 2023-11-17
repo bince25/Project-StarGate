@@ -4,13 +4,11 @@ using DG.Tweening;
 public class CollectableController : MonoBehaviour
 {
     public GameObject replacementSwordPrefab;
-    public GameObject notification;
 
     void Start()
     {
         // Set the initial sprite
         GetComponent<SpriteRenderer>().sprite = replacementSwordPrefab.GetComponent<SpriteRenderer>().sprite;
-
 
         // Play the looping bounce animation
         PlayLoopingBounceAnimation();
@@ -21,8 +19,7 @@ public class CollectableController : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             // Display a message or UI hint for the player to press 'E'
-            Debug.Log("Player entered the trigger");
-            notification.SetActive(true);
+            ResourceManager.Instance.ActivationOfItemNotification(true);
         }
     }
 
@@ -31,8 +28,8 @@ public class CollectableController : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             // Hide the message or UI hint for the player to press 'E'
-            Debug.Log("Player exited the trigger");
-            notification.SetActive(false);
+            ResourceManager.Instance.ActivationOfItemNotification(false);
+
         }
     }
 

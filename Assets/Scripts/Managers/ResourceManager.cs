@@ -5,8 +5,8 @@ using UnityEngine;
 public class ResourceManager : MonoBehaviour
 {
 
+    public GameObject itemNotification;
     public int gearCount = 0;
-
     public static ResourceManager Instance;
 
     void Awake()
@@ -15,6 +15,11 @@ public class ResourceManager : MonoBehaviour
         {
             Instance = this;
         }
+        itemNotification.SetActive(false);
+    }
+    public void ActivationOfItemNotification(bool active)
+    {
+        itemNotification.SetActive(active);
     }
 
     public void AddGear(int amount)

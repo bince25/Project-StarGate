@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 6242067943165184617}
   - component: {fileID: 137040068445130205}
   m_Layer: 0
-  m_Name: Sword Weird
+  m_Name: Weird Sword
   m_TagString: Sword
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -105,6 +105,7 @@ MonoBehaviour:
   weight: 1
   defaultRotationSpeed: 300
   collisionParticles: {fileID: 7114707331762081372, guid: dc4300f7519e15f419b671362aac2371, type: 3}
+  swordType: 3
   durability: 100
   damage: 1
   edgeOfSword: {x: 0, y: 0, z: 0}
@@ -310,8 +311,8 @@ MonoBehaviour:
   m_ShadowVolumeIntensityEnabled: 0
   m_ShadowVolumeIntensity: 0.75
   m_LocalBounds:
-    m_Center: {x: -0.0352, y: 0.09044999, z: 0}
-    m_Extent: {x: 0.6345, y: 1.06025, z: 0}
+    m_Center: {x: -0.03735, y: 0.088750005, z: 0}
+    m_Extent: {x: 0.63015, y: 1.05725, z: 0}
   m_PointLightInnerAngle: 359.99997
   m_PointLightOuterAngle: 359.99997
   m_PointLightInnerRadius: 0
