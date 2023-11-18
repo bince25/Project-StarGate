@@ -13,6 +13,8 @@ public class SpawnManager : MonoBehaviour
     private int currentEnemyCount = 0;
     private Coroutine spawnCoroutine;
 
+    public GameObject particleSystemPrefab;
+
     void Start()
     {
         spawnCoroutine = StartCoroutine(SpawnEnemiesCoroutine());
@@ -61,8 +63,19 @@ public class SpawnManager : MonoBehaviour
 
     void SpawnEnemy(Vector2 spawnPoint)
     {
-        GameObject enemyPrefab = Random.Range(0, 4) > 0 ? basicEnemyPrefab : normalEnemyPrefab;
-        Instantiate(enemyPrefab, spawnPoint, Quaternion.identity);
+        GameObject particleSystemObject = Instantiate(particleSystemPrefab, spawnPoint, Quaternion.identity);
+        ParticleSystem particleSystem = particleSystemObject.GetComponent<ParticleSystem>();
+
+        // Subscribe to the OnParticleSystemStopped event
+        ParticleSystemStoppedListener listener = particleSystemObject.AddComponent<ParticleSystemStoppedListener>();
+        listener.Initialize(this, particleSystem);
+
+        // Spawn enemy after the particle system stops
+        listener.OnParticleSystemStoppedCallback += () =>
+        {
+            GameObject enemyPrefab = Random.Range(0, 4) > 0 ? basicEnemyPrefab : normalEnemyPrefab;
+            Instantiate(enemyPrefab, spawnPoint, Quaternion.identity);
+        };
     }
 
     public void OnEnemyDeath()
