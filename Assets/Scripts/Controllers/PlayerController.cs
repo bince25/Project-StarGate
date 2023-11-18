@@ -13,7 +13,7 @@ public class PlayerController : MonoBehaviour
     private GameObject spritesObject;
     private Animator legsAnimator;
     private Rigidbody2D rb;
-    private GameObject playersSword;
+    public GameObject playersSword;
 
     void Awake()
     {
@@ -27,12 +27,7 @@ public class PlayerController : MonoBehaviour
         {
             rb = gameObject.AddComponent<Rigidbody2D>();
         }
-    }
 
-    void Start()
-    {
-        // Get the Animator component from the "Legs" child object
-        legsAnimator = spritesObject.transform.GetChild(spritesObject.transform.childCount - 1).GetComponent<Animator>();
         foreach (Transform child in transform)
         {
             if (child.CompareTag("Sword"))
@@ -40,6 +35,12 @@ public class PlayerController : MonoBehaviour
                 playersSword = child.gameObject;
             }
         }
+    }
+
+    void Start()
+    {
+        // Get the Animator component from the "Legs" child object
+        legsAnimator = spritesObject.transform.GetChild(spritesObject.transform.childCount - 1).GetComponent<Animator>();
     }
     public float moveSpeed = 5f;
 

@@ -4,7 +4,7 @@ using Pathfinding;
 public class EliteEnemyAI : MonoBehaviour
 {
     public Transform playerTransform;
-    public SwordController playerSword;
+    public GameObject playerSword;
     public float attackDistance = 2f;
     public float safeDistanceFromSword = 1.5f;
     public float detectionRange = 10f;
@@ -23,7 +23,7 @@ public class EliteEnemyAI : MonoBehaviour
     void Start()
     {
         playerTransform = PlayerController.Instance.transform;
-        playerSword = playerTransform.GetComponentInChildren<SwordController>();
+        playerSword = PlayerController.Instance.playersSword;
     }
 
     void Update()
@@ -45,6 +45,7 @@ public class EliteEnemyAI : MonoBehaviour
 
     private void EngageInCombat()
     {
+        playerSword = PlayerController.Instance.playersSword;
         float distanceToPlayer = Vector3.Distance(transform.position, playerTransform.position);
         Vector3 directionToPlayerSword = playerSword.transform.position - transform.position;
         float angleToPlayerSword = Vector3.Angle(transform.forward, directionToPlayerSword);

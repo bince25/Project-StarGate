@@ -39,6 +39,8 @@ public class PoolManager : MonoBehaviour
             ObjectPool newPool = poolHolder.AddComponent<ObjectPool>();
             newPool.InitializePool(pool.prefab, pool.size, poolHolder.transform);
 
+            poolHolder.transform.position = gameObject.transform.position;
+
             poolDictionary.Add(pool.tag, newPool);
         }
     }

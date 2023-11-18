@@ -20,6 +20,14 @@ public class CollectableController : MonoBehaviour
         {
             // Display a message or UI hint for the player to press 'E'
             ResourceManager.Instance.ActivationOfItemNotification(true);
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                // Call a method in the PlayerController to switch the sword prefab
+                other.GetComponent<PlayerController>().SwitchSwordPrefab(replacementSwordPrefab);
+
+                // Destroy the collectible item
+                Destroy(gameObject);
+            }
         }
     }
 
