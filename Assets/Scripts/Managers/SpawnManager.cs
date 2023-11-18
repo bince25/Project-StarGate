@@ -57,7 +57,7 @@ public class SpawnManager : MonoBehaviour
     bool IsValidSpawnPoint(Vector2 point)
     {
         // Check if the point is on a walkable node
-        GraphNode node = AstarPath.active.data.graphs[1].GetNearest(point).node;
+        GraphNode node = AstarPath.active.data.graphs[0].GetNearest(point).node;
         return node != null && node.Walkable;
     }
 

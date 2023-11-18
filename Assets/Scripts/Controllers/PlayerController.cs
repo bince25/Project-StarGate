@@ -103,7 +103,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    void Die()
+    public void Die()
     {
         if (godMode)
         {
