@@ -110,6 +110,17 @@ public class SoundManager : MonoBehaviour
         }
     }
 
+    public AudioSource PlayMusic(AudioClip music)
+    {
+        AudioSource musicSource = GetAvailableAudioSource();
+
+        musicSource.clip = music;
+        musicSource.loop = true; // Usually, music tracks are looped
+        musicSource.outputAudioMixerGroup = musicGroup;
+        musicSource.Play();
+        return musicSource;
+    }
+
     public void StopMusic()
     {
         foreach (var source in audioSources)

@@ -11,14 +11,13 @@ public class SoundFadeInOut : MonoBehaviour
     void Start()
     {
         // Initialize the AudioSource
-        audioSource = gameObject.GetComponent<AudioSource>();
-        audioSource.clip = backgroundMusic;
+        audioSource = SoundManager.Instance.PlayMusic(backgroundMusic);
 
         // Set up the audio settings
         audioSource.loop = true;
         audioSource.volume = 0f; // Start with zero volume
 
-        audioSource.Play();
+        //audioSource.Play();
 
         // Start playing the audio source with fade-in effect
         StartCoroutine(FadeInAudio());
