@@ -97,6 +97,10 @@ public class BossEnemyController : MonoBehaviour
         // Iterate through all legs and activate their swords
         foreach (Transform leg in legs)
         {
+            if (leg == null)
+            {
+                continue;
+            }
             Transform sword = leg.GetChild(0); // Assuming "Sword" is the name of the sword GameObject
             if (sword != null)
             {
@@ -131,6 +135,10 @@ public class BossEnemyController : MonoBehaviour
         // Iterate through all legs and deactivate their swords
         foreach (Transform leg in legs)
         {
+            if (leg == null)
+            {
+                continue;
+            }
             Transform sword = leg.GetChild(0); // Assuming "Sword" is the name of the sword GameObject
             if (sword != null)
             {
