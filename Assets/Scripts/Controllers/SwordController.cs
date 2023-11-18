@@ -232,7 +232,11 @@ public class SwordController : MonoBehaviour
         HandleDurabilityChange(CollisionType.Wall);
         HandleWallSpark();
         HandleSoundEffect(CollisionType.Wall);
-        Camera.main.GetComponent<CameraController>().TriggerShake();
+        if (isPlayerSword)
+        {
+
+            Camera.main.GetComponent<CameraController>().TriggerShake();
+        }
     }
 
     private void HandleObstacleCollision(Collider2D collider)

@@ -102,8 +102,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da836f1e93658c54b959174374a21145, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  godMode: 1
   spritesObject: {fileID: 2527302333935731572}
-  moveSpeed: 5
+  moveSpeed: 10
 --- !u!50 &8341310694055030095
 Rigidbody2D:
   serializedVersion: 4
@@ -114,7 +115,7 @@ Rigidbody2D:
   m_GameObject: {fileID: 1342842907156014186}
   m_BodyType: 0
   m_Simulated: 1
-  m_UseFullKinematicContacts: 0
+  m_UseFullKinematicContacts: 1
   m_UseAutoMass: 0
   m_Mass: 1
   m_LinearDrag: 0
@@ -127,7 +128,7 @@ Rigidbody2D:
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
@@ -448,6 +449,7 @@ MonoBehaviour:
   weight: 1
   defaultRotationSpeed: 300
   collisionParticles: {fileID: 7114707331762081372, guid: dc4300f7519e15f419b671362aac2371, type: 3}
+  swordType: 0
   durability: 100
   damage: 1
   edgeOfSword: {x: 0, y: 0, z: 0}
@@ -653,8 +655,8 @@ MonoBehaviour:
   m_ShadowVolumeIntensityEnabled: 0
   m_ShadowVolumeIntensity: 0.75
   m_LocalBounds:
-    m_Center: {x: 0.0052999854, y: 0.5509, z: 0}
-    m_Extent: {x: 0.7216, y: 1.2067, z: 0}
+    m_Center: {x: 0.0135499835, y: 0.56095, z: 0}
+    m_Extent: {x: 0.71595, y: 1.20755, z: 0}
   m_PointLightInnerAngle: 359.99997
   m_PointLightOuterAngle: 359.99997
   m_PointLightInnerRadius: 0

@@ -8,12 +8,16 @@ public class EliteEnemyAI : MonoBehaviour
     public float attackDistance = 2f;
     public float safeDistanceFromSword = 1.5f;
     public float detectionRange = 10f;
+    private Animator animator;
+    private SpriteRenderer spriteRenderer;
 
     private IAstarAI ai;
 
     void Awake()
     {
         ai = GetComponent<IAstarAI>();
+        animator = GetComponent<Animator>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     void Start()
@@ -27,6 +31,15 @@ public class EliteEnemyAI : MonoBehaviour
         if (playerTransform != null && IsPlayerInDetectionRange())
         {
             EngageInCombat();
+
+            bool isMoving = ai.velocity.magnitude > 0.1f;
+            animator.SetBool("IsMoving", isMoving);
+            animator.SetFloat("Speed", ai.velocity.magnitude);
+
+            if (isMoving)
+            {
+                UpdateSpriteFlip(ai.velocity.x);
+            }
         }
     }
 
@@ -70,5 +83,9 @@ public class EliteEnemyAI : MonoBehaviour
     private bool IsPlayerInDetectionRange()
     {
         return Vector3.Distance(transform.position, playerTransform.position) <= detectionRange;
+    }
+    void UpdateSpriteFlip(float direction)
+    {
+        spriteRenderer.flipX = direction < 0;
     }
 }

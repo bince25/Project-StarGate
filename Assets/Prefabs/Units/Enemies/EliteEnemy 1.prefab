@@ -110,7 +110,6 @@ MonoBehaviour:
   bulletSpawnPoint: {fileID: 0}
   bulletSpeed: 10
   shootingInterval: 2
-  collectablePrefab: {fileID: 3462710578260023422, guid: c40e6bb52e7ef5e499b10cb341d04359, type: 3}
 --- !u!114 &6083116296861766441
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -362,6 +361,7 @@ MonoBehaviour:
   weight: 1
   defaultRotationSpeed: 300
   collisionParticles: {fileID: 7114707331762081372, guid: dc4300f7519e15f419b671362aac2371, type: 3}
+  swordType: 1
   durability: 100
   damage: 1
   edgeOfSword: {x: 0, y: 0, z: 0}
@@ -567,8 +567,8 @@ MonoBehaviour:
   m_ShadowVolumeIntensityEnabled: 0
   m_ShadowVolumeIntensity: 0.75
   m_LocalBounds:
-    m_Center: {x: -0.0092999935, y: 0.6423, z: 0}
-    m_Extent: {x: 0.6583, y: 1.4438001, z: 0}
+    m_Center: {x: -0.0079, y: 0.63724995, z: 0}
+    m_Extent: {x: 0.6544, y: 1.4367499, z: 0}
   m_PointLightInnerAngle: 359.99997
   m_PointLightOuterAngle: 359.99997
   m_PointLightInnerRadius: 0
