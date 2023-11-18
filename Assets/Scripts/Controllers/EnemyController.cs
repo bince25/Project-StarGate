@@ -109,8 +109,13 @@ public class EnemyController : MonoBehaviour
         GameObject sword;
         switch (dropType)
         {
+            /* 
+            0 - Heavy 
+            1- Long 
+            2- Short 
+            3- Weird*/
             case SwordsEnum.Heavy:
-                sword = PoolManager.Instance.GetObject("Heavy Sword");
+                sword = SwordManager.Instance.swords[0];
                 if (sword != null)
                 {
                     GameObject collectableObject = PoolManager.Instance.GetObject("Collectable");
@@ -123,7 +128,7 @@ public class EnemyController : MonoBehaviour
                 }
                 break;
             case SwordsEnum.Long:
-                sword = PoolManager.Instance.GetObject("Long Sword");
+                sword = SwordManager.Instance.swords[1];
                 if (sword != null)
                 {
                     GameObject collectableObject = PoolManager.Instance.GetObject("Collectable");
@@ -136,7 +141,7 @@ public class EnemyController : MonoBehaviour
                 }
                 break;
             case SwordsEnum.Short:
-                sword = PoolManager.Instance.GetObject("Short Sword");
+                sword = SwordManager.Instance.swords[2];
                 if (sword != null)
                 {
                     GameObject collectableObject = PoolManager.Instance.GetObject("Collectable");
@@ -149,7 +154,7 @@ public class EnemyController : MonoBehaviour
                 }
                 break;
             case SwordsEnum.Weird:
-                sword = PoolManager.Instance.GetObject("Weird Sword");
+                sword = SwordManager.Instance.swords[3];
                 if (sword != null)
                 {
                     GameObject collectableObject = PoolManager.Instance.GetObject("Collectable");

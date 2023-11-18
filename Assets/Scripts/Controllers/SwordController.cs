@@ -114,7 +114,7 @@ public class SwordController : MonoBehaviour
         HandleDurabilityChange(CollisionType.Sword);
 
         Camera.main.GetComponent<CameraController>().TriggerShake();
-        ApplyPlayerRecoil(2.5f);
+        /* ApplyPlayerRecoil(2.5f); */
     }
 
     private void HandleMomentumCollision(SwordController otherSword)
@@ -208,7 +208,7 @@ public class SwordController : MonoBehaviour
     {
         EnemyController enemy = collider.GetComponent<EnemyController>();
         enemy.TakeDamage(damage);
-        ApplyPlayerRecoil(1f);
+        /* ApplyPlayerRecoil(1f); */
         switch (enemy.enemyType)
         {
             case Enemy.Basic:
@@ -285,7 +285,7 @@ public class SwordController : MonoBehaviour
         }
     }
 
-    private void ApplyPlayerRecoil(float recoilDistance)
+    /* private void ApplyPlayerRecoil(float recoilDistance)
     {
         // Move the player back by a certain distance (you can adjust this value)
 
@@ -313,5 +313,5 @@ public class SwordController : MonoBehaviour
 
         // Ensure the player is exactly at the target position
         PlayerController.Instance.GetComponent<Rigidbody2D>().MovePosition(targetPosition);
-    }
+    } */
 }

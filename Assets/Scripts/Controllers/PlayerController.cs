@@ -119,6 +119,13 @@ public class PlayerController : MonoBehaviour
     }
     public void SwitchSwordPrefab(GameObject newSwordPrefab)
     {
+        foreach (Transform child in transform)
+        {
+            if (child.CompareTag("Sword"))
+            {
+                playersSword = child.gameObject;
+            }
+        }
         // Destroy the current sword prefab
         Destroy(playersSword);
 
