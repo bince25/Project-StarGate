@@ -75,6 +75,7 @@ public class SwordController : MonoBehaviour
         if (other.CompareTag("Sword"))
         {
             HandleSwordCollision(other);
+
         }
         else if (other.CompareTag("Enemy") && isPlayerSword)
         {
@@ -113,6 +114,7 @@ public class SwordController : MonoBehaviour
         HandleDurabilityChange(CollisionType.Sword);
 
         Camera.main.GetComponent<CameraController>().TriggerShake();
+        ApplyPlayerRecoil(2.5f);
     }
 
     private void HandleMomentumCollision(SwordController otherSword)
@@ -206,7 +208,7 @@ public class SwordController : MonoBehaviour
     {
         EnemyController enemy = collider.GetComponent<EnemyController>();
         enemy.TakeDamage(damage);
-
+        ApplyPlayerRecoil(1f);
         switch (enemy.enemyType)
         {
             case Enemy.Basic:
@@ -230,6 +232,7 @@ public class SwordController : MonoBehaviour
         HandleDurabilityChange(CollisionType.Wall);
         HandleWallSpark();
         HandleSoundEffect(CollisionType.Wall);
+        Camera.main.GetComponent<CameraController>().TriggerShake();
     }
 
     private void HandleObstacleCollision(Collider2D collider)
@@ -276,5 +279,35 @@ public class SwordController : MonoBehaviour
                 durability -= SwordConstants.BULLET_DEFAULT_DURABILITY_LOSS;
                 break;
         }
+    }
+
+    private void ApplyPlayerRecoil(float recoilDistance)
+    {
+        // Move the player back by a certain distance (you can adjust this value)
+
+        Vector2 playerCurrentPosition = PlayerController.Instance.transform.position;
+        Vector2 recoilDirection = -transform.up; // Change this to the appropriate direction
+        Vector2 targetPosition = playerCurrentPosition + recoilDirection * recoilDistance;
+
+        StartCoroutine(PlayerRecoilCoroutine(targetPosition));
+    }
+
+    private IEnumerator PlayerRecoilCoroutine(Vector2 targetPosition)
+    {
+        float recoilDuration = 0.15f; // Adjust this duration based on your preference
+        float elapsedTime = 0f;
+        Vector2 startingPosition = PlayerController.Instance.transform.position;
+
+
+
+        while (elapsedTime < recoilDuration)
+        {
+            PlayerController.Instance.GetComponent<Rigidbody2D>().MovePosition(Vector2.Lerp(startingPosition, targetPosition, elapsedTime / recoilDuration));
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        // Ensure the player is exactly at the target position
+        PlayerController.Instance.GetComponent<Rigidbody2D>().MovePosition(targetPosition);
     }
 }

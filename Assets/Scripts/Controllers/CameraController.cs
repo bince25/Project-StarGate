@@ -48,6 +48,6 @@ public class CameraController : MonoBehaviour
     {
         isShaking = true;
         shakeDuration = 0.3f; // Adjust the duration as needed
-        shakeMagnitude = 0.3f; // Adjust the magnitude as needed
+        shakeMagnitude = 0.7f; // Adjust the magnitude as needed
     }
 }
