@@ -1,23 +1,35 @@
+using System.Collections;
 using UnityEngine;
 
 public class ParticleSystemStoppedListener : MonoBehaviour
 {
-    private SpawnManager spawnManager;
     private ParticleSystem particleSystem;
     public System.Action OnParticleSystemStoppedCallback;
-
-    public void Initialize(SpawnManager controller, ParticleSystem system)
+    bool readyToDestroy = false;
+    public void Initialize(ParticleSystem system)
     {
-        spawnManager = controller;
         particleSystem = system;
     }
 
+    void Start()
+    {
+        readyToDestroy = false;
+        StartCoroutine(DestroyAfterDelay(2.5f));
+    }
+
+
     void Update()
     {
-        if (!particleSystem.IsAlive())
+        if (!particleSystem.IsAlive() || readyToDestroy)
         {
             OnParticleSystemStoppedCallback?.Invoke();
             Destroy(gameObject); // Remove this listener component when no longer needed
         }
+    }
+
+    IEnumerator DestroyAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        readyToDestroy = true;
     }
 }

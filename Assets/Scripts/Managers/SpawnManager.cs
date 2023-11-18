@@ -68,7 +68,7 @@ public class SpawnManager : MonoBehaviour
 
         // Subscribe to the OnParticleSystemStopped event
         ParticleSystemStoppedListener listener = particleSystemObject.AddComponent<ParticleSystemStoppedListener>();
-        listener.Initialize(this, particleSystem);
+        listener.Initialize(particleSystem);
 
         // Spawn enemy after the particle system stops
         listener.OnParticleSystemStoppedCallback += () =>
