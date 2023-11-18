@@ -1,0 +1,73 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3398616969874292033
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3684229361921023283}
+  - component: {fileID: 5263354225810513437}
+  m_Layer: 0
+  m_Name: SoundManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3684229361921023283
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3398616969874292033}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5263354225810513437
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3398616969874292033}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bfe6a15421ce242e7897853111541e8a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioMixer: {fileID: 0}
+  musicGroup: {fileID: 0}
+  soundEffectGroup: {fileID: 0}
+  enemyHitSounds:
+  - {fileID: 8300000, guid: edc7a7644c09ec744bdb7eed7c1850d7, type: 3}
+  enemyDeathSounds:
+  - {fileID: 8300000, guid: edc7a7644c09ec744bdb7eed7c1850d7, type: 3}
+  playerHitSounds: []
+  playerDeathSounds:
+  - {fileID: 8300000, guid: edc7a7644c09ec744bdb7eed7c1850d7, type: 3}
+  playerShootSounds: []
+  gearCollectSounds:
+  - {fileID: 8300000, guid: 752135884bf2a4d2e9bfe3db793c56ea, type: 3}
+  swordCollideSounds:
+  - {fileID: 8300000, guid: c7a55ee4a8ea5e94ab28aedfd88a1e61, type: 3}
+  - {fileID: 8300000, guid: 475af4c2b3fd4432783dc9d6a6c2b2fd, type: 3}
+  swordSwingSounds: []
+  swordLootSounds:
+  - {fileID: 8300000, guid: 408cd69295dd5664d8adf007eb4d9700, type: 3}
+  swordObstacleSounds:
+  - {fileID: 8300000, guid: bab5333c8012740d1a5c85f82aeff623, type: 3}
+  - {fileID: 8300000, guid: 14f792bb9d74e4a58bd9bf5d21dba1db, type: 3}
+  swordBulletSounds:
+  - {fileID: 8300000, guid: eecc9626dddf2442daab5e07b71971ef, type: 3}
+  - {fileID: 8300000, guid: e7dae6f226c3a40219bb701b079d90d4, type: 3}
+  menuSounds: []
+  music: []

@@ -1,9 +1,15 @@
 using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine.Audio;
 
 public class SoundManager : MonoBehaviour
 {
     public static SoundManager Instance;
+
+    public AudioMixer audioMixer; // Attach your AudioMixer here
+    public AudioMixerGroup musicGroup; // Attach your Music AudioMixerGroup here
+    public AudioMixerGroup soundEffectGroup;
+    public AudioMixerGroup uiGroup;
 
     // Sound effect arrays
     public AudioClip[] enemyHitSounds;
@@ -43,11 +49,12 @@ public class SoundManager : MonoBehaviour
         for (int i = 0; i < audioSourcePoolSize; i++)
         {
             AudioSource source = gameObject.AddComponent<AudioSource>();
+            source.outputAudioMixerGroup = soundEffectGroup; // Assign to sound effect group by default
             audioSources.Add(source);
         }
     }
 
-    private void PlaySound(AudioClip[] clips)
+    private void PlaySound(AudioClip[] clips, AudioMixerGroup group = null)
     {
         if (clips.Length == 0) return;
 
@@ -56,6 +63,11 @@ public class SoundManager : MonoBehaviour
         if (source != null)
         {
             source.PlayOneShot(clip);
+        }
+
+        if (group != null)
+        {
+            source.outputAudioMixerGroup = group;
         }
     }
 
@@ -71,17 +83,19 @@ public class SoundManager : MonoBehaviour
         return null; // Consider expanding the pool size if this happens
     }
 
-    public void PlayEnemyHitSound() { PlaySound(enemyHitSounds); }
-    public void PlayEnemyDeathSound() { PlaySound(enemyDeathSounds); }
-    public void PlayPlayerHitSound() { PlaySound(playerHitSounds); }
-    public void PlayPlayerDeathSound() { PlaySound(playerDeathSounds); }
-    public void PlayPlayerShootSound() { PlaySound(playerShootSounds); }
-    public void PlayGearCollectSound() { PlaySound(gearCollectSounds); }
-    public void PlaySwordCollideSound() { PlaySound(swordCollideSounds); }
-    public void PlaySwordSwingSound() { PlaySound(swordSwingSounds); }
-    public void PlaySwordLootSound() { PlaySound(swordLootSounds); }
-    public void PlaySwordObstacleSound() { PlaySound(swordObstacleSounds); }
-    public void PlaySwordBulletSound() { PlaySound(swordBulletSounds); }
+    public void PlayEnemyHitSound() { PlaySound(enemyHitSounds, soundEffectGroup); }
+    public void PlayEnemyDeathSound() { PlaySound(enemyDeathSounds, soundEffectGroup); }
+    public void PlayPlayerHitSound() { PlaySound(playerHitSounds, soundEffectGroup); }
+    public void PlayPlayerDeathSound() { PlaySound(playerDeathSounds, soundEffectGroup); }
+    public void PlayPlayerShootSound() { PlaySound(playerShootSounds, soundEffectGroup); }
+    public void PlayGearCollectSound() { PlaySound(gearCollectSounds, soundEffectGroup); }
+    public void PlaySwordCollideSound() { PlaySound(swordCollideSounds, soundEffectGroup); }
+    public void PlaySwordSwingSound() { PlaySound(swordSwingSounds, soundEffectGroup); }
+    public void PlaySwordLootSound() { PlaySound(swordLootSounds, soundEffectGroup); }
+    public void PlaySwordObstacleSound() { PlaySound(swordObstacleSounds, soundEffectGroup); }
+    public void PlaySwordBulletSound() { PlaySound(swordBulletSounds, soundEffectGroup); }
+
+    public void PlayMenuSound() { PlaySound(menuSounds, uiGroup); }
 
     // Music control methods
     public void PlayMusic()
@@ -90,6 +104,8 @@ public class SoundManager : MonoBehaviour
         if (music.Length > 0 && musicSource != null)
         {
             musicSource.clip = music[Random.Range(0, music.Length)];
+            musicSource.loop = true; // Usually, music tracks are looped
+            musicSource.outputAudioMixerGroup = musicGroup;
             musicSource.Play();
         }
     }
@@ -105,13 +121,27 @@ public class SoundManager : MonoBehaviour
         }
     }
 
-    public void SetVolume(float volume)
+    public void SetMasterVolume(float volume)
     {
-        foreach (var source in audioSources)
+        float volumeInDB;
+
+        if (volume == 0)
         {
-            source.volume = volume;
+            // If the volume is 0, set it to -80 dB (silence).
+            volumeInDB = -80;
         }
+        else
+        {
+            // Convert the linear range (0 to 5) to a logarithmic dB scale (-80 to 0).
+            // The division by 5 normalizes the slider value to a 0-1 range.
+            volumeInDB = Mathf.Log10(volume / 5) * 20;
+        }
+
+        // Set the volume on the mixer. Clamp it just to be safe.
+        volumeInDB = Mathf.Max(volumeInDB, -80);
+        audioMixer.SetFloat("MasterVolume", volumeInDB);
     }
+
 
     public void SetPitch(float pitch)
     {
