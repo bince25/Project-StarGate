@@ -11,6 +11,8 @@ TagManager:
   - Obstacle
   - Bullet
   - Notification
+  - FxTemporaire
+  - Wizard
   layers:
   - Default
   - TransparentFX
