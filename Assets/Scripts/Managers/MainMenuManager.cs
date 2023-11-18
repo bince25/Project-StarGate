@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MainMenuManager : MonoBehaviour
 {
@@ -42,26 +43,14 @@ public class MainMenuManager : MonoBehaviour
         creditPanel.SetActive(false);
     }
 
-    protected void PlayGame()
+    public void PlayGame()
     {
         LoadLevel(Levels.Level1);
     }
 
     public void LoadLevel(Levels level)
     {
-        switch (level)
-        {
-            case Levels.MainMenu:
-                UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenu");
-                break;
-            case Levels.Level1:
-                UnityEngine.SceneManagement.SceneManager.LoadScene("Level1");
-                break;
-            case Levels.Level2:
-                UnityEngine.SceneManagement.SceneManager.LoadScene("Level2");
-                break;
-            default:
-                break;
-        }
+        Debug.Log("Loading level " + (int)level);
+        LoadManager.Instance.LoadSceneWithTransition(level);
     }
 }
