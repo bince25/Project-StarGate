@@ -13,6 +13,7 @@ TagManager:
   - Notification
   - FxTemporaire
   - Wizard
+  - Leg
   layers:
   - Default
   - TransparentFX

@@ -97,10 +97,24 @@ public class SwordController : MonoBehaviour
         {
             HandleBulletCollision(other);
         }
+        else if (other.CompareTag("Leg") && isPlayerSword)
+        {
+            HandleBossLegCollision(other);
+        }
         else
         {
             Debug.LogWarning("Sword collided with an unknown object: " + other.name);
         }
+    }
+
+    private void HandleBossLegCollision(Collider2D collider)
+    {
+        BossLegController leg = collider.GetComponent<BossLegController>();
+        leg.DamageLeg(damage);
+        ReverseRotation();
+        HandleDurabilityChange(CollisionType.EnemyBoss);
+        Camera.main.GetComponent<CameraController>().TriggerShake();
+        HandleSoundEffect(CollisionType.Sword);
     }
 
     private void HandleSwordCollision(Collider2D collider)
