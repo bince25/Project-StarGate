@@ -4,12 +4,20 @@ using TMPro;
 
 public class DialogueManager : MonoBehaviour
 {
+    public static DialogueManager Instance;
     public GameObject dialogueBox;
     public TypewriterEffect typewriterEffect;
+    void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+    }
 
     void Start()
     {
-        CloseDialogueBox();
+
     }
 
     public void OpenDialogueBox(string dialogue)
