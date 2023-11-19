@@ -53,6 +53,8 @@ public class LoadManager : MonoBehaviour
     {
         yield return new WaitForSeconds(1.5f);
 
+        SoundManager.Instance.StopMusic(audioSource, 0.2f);
+
         progressBar = LoadScreenUIManager.Instance.progressBar;
         progressText = LoadScreenUIManager.Instance.progressText;
 
@@ -66,7 +68,6 @@ public class LoadManager : MonoBehaviour
 
             yield return null;
         }
-        SoundManager.Instance.StopMusic(audioSource);
     }
 
     public void SetBackground(Sprite backgroundSprite)
