@@ -223,6 +223,7 @@ MonoBehaviour:
   progressBar: {fileID: 1833124702}
   progressText: {fileID: 975546820}
   background: {fileID: 775930960}
+  bgMusic: {fileID: 0}
 --- !u!4 &678800205
 Transform:
   m_ObjectHideFlags: 0
@@ -474,22 +475,26 @@ PrefabInstance:
     - target: {fileID: 1465012147230069320, guid: 15c0c78b679c81045b96117dbc944bf4, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: aeebf32194058704d8059579bf457978, type: 3}
+      objectReference: {fileID: 21300000, guid: d058ede54744a294aa4572098e83c0ea, type: 3}
+    - target: {fileID: 1465012147230069320, guid: 15c0c78b679c81045b96117dbc944bf4, type: 3}
+      propertyPath: m_Color.a
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1465012147230069320, guid: 15c0c78b679c81045b96117dbc944bf4, type: 3}
       propertyPath: m_Color.b
-      value: 0.24150053
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1465012147230069320, guid: 15c0c78b679c81045b96117dbc944bf4, type: 3}
       propertyPath: m_Color.g
-      value: 0.720787
+      value: 0.81539816
       objectReference: {fileID: 0}
     - target: {fileID: 1465012147230069320, guid: 15c0c78b679c81045b96117dbc944bf4, type: 3}
       propertyPath: m_Color.r
-      value: 0.764151
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1465012147230069320, guid: 15c0c78b679c81045b96117dbc944bf4, type: 3}
       propertyPath: m_FillAmount
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1465012147230069327, guid: 15c0c78b679c81045b96117dbc944bf4, type: 3}
       propertyPath: m_AnchorMax.x
@@ -498,6 +503,10 @@ PrefabInstance:
     - target: {fileID: 1465012147230069327, guid: 15c0c78b679c81045b96117dbc944bf4, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1465012147230069327, guid: 15c0c78b679c81045b96117dbc944bf4, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0.8
       objectReference: {fileID: 0}
     - target: {fileID: 1465012147693081547, guid: 15c0c78b679c81045b96117dbc944bf4, type: 3}
       propertyPath: m_Color.a
@@ -569,7 +578,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1465012148195525504, guid: 15c0c78b679c81045b96117dbc944bf4, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -26.9
+      value: -30.199951
       objectReference: {fileID: 0}
     - target: {fileID: 1465012148195525504, guid: 15c0c78b679c81045b96117dbc944bf4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -586,6 +595,10 @@ PrefabInstance:
     - target: {fileID: 1465012148195525506, guid: 15c0c78b679c81045b96117dbc944bf4, type: 3}
       propertyPath: m_Value
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1465012148195525506, guid: 15c0c78b679c81045b96117dbc944bf4, type: 3}
+      propertyPath: m_MaxValue
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1465012148195525511, guid: 15c0c78b679c81045b96117dbc944bf4, type: 3}
       propertyPath: m_Name
@@ -707,7 +720,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 800, y: 600}
@@ -797,7 +810,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 12.7, y: -26.100006}
+  m_AnchoredPosition: {x: 12.7, y: -29.4}
   m_SizeDelta: {x: 140, y: 13}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1963351448

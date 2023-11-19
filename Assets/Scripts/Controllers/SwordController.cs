@@ -30,7 +30,7 @@ public class SwordController : MonoBehaviour
         currentRotationSpeed = defaultRotationSpeed;
         edgeOfSword = GetComponentInChildren<Transform>().position;
         isPlayerSword = transform.parent.gameObject.CompareTag("Player");
-        SwordManager.Instance.UpdateDurabilityUI();
+        if (isPlayerSword) SwordManager.Instance.UpdateDurabilityUI();
     }
 
     void Update()

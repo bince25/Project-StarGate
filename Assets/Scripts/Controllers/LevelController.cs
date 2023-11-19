@@ -10,12 +10,47 @@ public class LevelController : MonoBehaviour
     public AudioSource audioSource;
 
     public int requiredGearCount = 10;
+    public GameObject[] unitsToBeKilled = null;
+    public TrapController[] traps = null;
+
+    public Levels level;
 
     void Start()
     {
         audioSource = SoundManager.Instance.PlayMusic(levelMusic, 1.5f);
 
-        PlayLoopingBounceAnimation();
+        switch (level)
+        {
+            case Levels.Level1:
+                PlayLoopingBounceAnimation();
+                break;
+            case Levels.Level2:
+                break;
+        }
+
+    }
+
+    void Update()
+    {
+        Debug.Log(unitsToBeKilled);
+        if (unitsToBeKilled != null && unitsToBeKilled.Length > 0)
+        {
+            foreach (GameObject unit in unitsToBeKilled)
+            {
+                if (unit != null)
+                {
+                    return;
+                }
+            }
+            foreach (TrapController trap in traps)
+            {
+                trap.isActive = false;
+                trap.disabled = true;
+                trap.animator.SetBool("isAlwaysActive", false);
+                trap.animator.SetBool("isActivated", false);
+                StartCoroutine(trap.DeactivateTrap());
+            }
+        }
     }
 
     void OnTriggerEnter2D(Collider2D other)
@@ -37,8 +72,20 @@ public class LevelController : MonoBehaviour
 
     IEnumerator EndLevelCoroutine()
     {
-        yield return new WaitForSeconds(.7f);
-        LoadManager.Instance.LoadSceneWithTransition((Levels)(SceneManager.GetActiveScene().buildIndex + 1));
+        switch (level)
+        {
+            case Levels.Level1:
+                if (ResourceManager.Instance.gearCount >= requiredGearCount)
+                {
+                    yield return new WaitForSeconds(.7f);
+                    LoadManager.Instance.LoadSceneWithTransition((Levels)(SceneManager.GetActiveScene().buildIndex + 1));
+                }
+                break;
+            case Levels.Level2:
+                yield return new WaitForSeconds(.7f);
+                LoadManager.Instance.LoadSceneWithTransition((Levels)(SceneManager.GetActiveScene().buildIndex + 1));
+                break;
+        }
     }
 
     void PlayLoopingBounceAnimation()
