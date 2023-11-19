@@ -327,10 +327,10 @@ public class SwordController : MonoBehaviour
                 durability -= SwordConstants.OTHER_SWORD_DEFAULT_DURABILITY_LOSS;
                 break;
             case CollisionType.Wall:
-                durability -= SwordConstants.OTHER_SWORD_DEFAULT_DURABILITY_LOSS;
+                durability -= SwordConstants.WALL_DEFAULT_DURABILITY_LOSS;
                 break;
             case CollisionType.Obstacle:
-                durability -= SwordConstants.OTHER_SWORD_DEFAULT_DURABILITY_LOSS;
+                durability -= SwordConstants.WALL_DEFAULT_DURABILITY_LOSS;
                 break;
             case CollisionType.Bullet:
                 durability -= SwordConstants.BULLET_DEFAULT_DURABILITY_LOSS;

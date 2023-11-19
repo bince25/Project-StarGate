@@ -83,8 +83,9 @@ public class Player : MonoBehaviour
         {
             other.gameObject.GetComponent<GearController>().GetCollected();
         }
-        else if (other.CompareTag("Sword") && (!other.transform.parent.gameObject.CompareTag("Player") || other.transform.parent.gameObject.name != this.transform.parent.gameObject.name))
+        else if (other.CompareTag("Sword") && (!other.transform.parent.gameObject.CompareTag("Player") || other.transform.parent.gameObject.name != transform.gameObject.name))
         {
+            if (boss != null && other.transform.parent.gameObject.CompareTag("Player")) return;
             killedByPlayer = true;
             Die();
         }

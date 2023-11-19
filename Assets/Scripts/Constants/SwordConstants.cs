@@ -17,6 +17,7 @@ public class SwordConstants
     public const float ELITE_ENEMY_DEFAULT_DURABILITY_LOSS = 2f;
     public const float BOSS_ENEMY_DEFAULT_DURABILITY_LOSS = 3f;
     public const float BULLET_DEFAULT_DURABILITY_LOSS = 1f;
-    public const float OTHER_SWORD_DEFAULT_DURABILITY_LOSS = 8f;
+    public const float OTHER_SWORD_DEFAULT_DURABILITY_LOSS = 6f;
+    public const float WALL_DEFAULT_DURABILITY_LOSS = 2f;
 
 }
