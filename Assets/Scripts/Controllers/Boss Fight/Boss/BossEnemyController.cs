@@ -48,6 +48,7 @@ public class BossEnemyController : MonoBehaviour
 
         if (players.Length <= 0 || killedPlayers >= 2)
         {
+            PlayerPrefs.SetInt("Arena", 1);
             LoadLevel((Levels)SceneManager.GetActiveScene().buildIndex);
         }
 

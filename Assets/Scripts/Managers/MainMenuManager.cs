@@ -39,6 +39,17 @@ public class MainMenuManager : MonoBehaviour
     {
         creditPanel.SetActive(true);
     }
+    public void OpenArena()
+    {
+        soundFadeInOut.StopAudioWithFadeOut();
+        StartCoroutine(OpenArenaCoroutine());
+    }
+
+    IEnumerator OpenArenaCoroutine()
+    {
+        yield return new WaitForSeconds(1.5f);
+        LoadLevel(Levels.VersusFight);
+    }
 
     public void CloseCredits()
     {
