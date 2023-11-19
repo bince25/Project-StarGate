@@ -32,6 +32,7 @@ public class SMController : MonoBehaviour
             DisableCharge();
         }
     }
+
     void DisableCharge()
     {
         if (charges.Length > 0)
