@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
@@ -123,6 +124,13 @@ public class PlayerController : MonoBehaviour
         isDead = true;
         SoundManager.Instance.PlayPlayerDeathSound();
         gameObject.SetActive(false);
+        LoadLevel((Levels)SceneManager.GetActiveScene().buildIndex);
+    }
+
+    public void LoadLevel(Levels level)
+    {
+        Debug.Log("Loading level " + (int)level);
+        LoadManager.Instance.LoadSceneWithTransition(level);
     }
     public void SwitchSwordPrefab(GameObject newSwordPrefab)
     {

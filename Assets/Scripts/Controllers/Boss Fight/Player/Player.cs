@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
@@ -7,7 +8,7 @@ public class Player : MonoBehaviour
     public GameObject playersSword;
 
     public float moveSpeed = 10f;
-    public bool isDead, godMode;
+    public bool isDead, godMode, killedByPlayer;
 
     protected virtual void Awake()
     {
@@ -82,6 +83,7 @@ public class Player : MonoBehaviour
         }
         else if (other.CompareTag("Sword") && (!other.transform.parent.gameObject.CompareTag("Player") || (other.transform.parent.gameObject.name != this.gameObject.name)))
         {
+            killedByPlayer = true;
             Die();
         }
         else if (other.CompareTag("Bullet"))
@@ -103,6 +105,17 @@ public class Player : MonoBehaviour
         isDead = true;
         SoundManager.Instance.PlayPlayerDeathSound();
         gameObject.SetActive(false);
+
+        if (!killedByPlayer)
+        {
+            LoadLevel((Levels)SceneManager.GetActiveScene().buildIndex);
+        }
+    }
+
+    public void LoadLevel(Levels level)
+    {
+        Debug.Log("Loading level " + (int)level);
+        LoadManager.Instance.LoadSceneWithTransition(level);
     }
 
     protected virtual string GetHorizontalInput()
