@@ -18,6 +18,7 @@ TagManager:
   - Ground
   - Key
   - Chest
+  - Boss
   layers:
   - Default
   - TransparentFX

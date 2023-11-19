@@ -1,13 +1,17 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class BossEnemyController : MonoBehaviour
 {
+    public static BossEnemyController Instance;
     public int totalLegs = 4;
     public int legsDestroyed = 0;
     public float bossHealth = 100f;
     public GameObject meteorPrefab;
     public GameObject particleSystemPrefab;
+
+    public int killedPlayers = 0;
 
     public Transform[] legs;
 
@@ -15,6 +19,14 @@ public class BossEnemyController : MonoBehaviour
 
     [SerializeField]
     private int totalMeteorThrow;
+
+    void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+    }
     void Start()
     {
         // Initialize the boss with all legs intact
@@ -25,6 +37,19 @@ public class BossEnemyController : MonoBehaviour
 
     void Update()
     {
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+        foreach (GameObject player in players)
+        {
+            if (players.Length <= 0 || player.GetComponent<Player>().isDead || player.activeInHierarchy == false)
+            {
+                killedPlayers++;
+            }
+        }
+
+        if (players.Length <= 0 || killedPlayers >= 2)
+        {
+            LoadLevel((Levels)SceneManager.GetActiveScene().buildIndex);
+        }
 
         if (totalMeteorThrow >= 20 && isPhase1)
         {
@@ -41,6 +66,13 @@ public class BossEnemyController : MonoBehaviour
         {
             StartCoroutine(ActivateLegSwordsForDuration(10f));
         }
+
+
+    }
+    public void LoadLevel(Levels level)
+    {
+        Debug.Log("Loading level " + (int)level);
+        LoadManager.Instance.LoadSceneWithTransition(level);
     }
 
     bool ShouldLaunchMeteor()

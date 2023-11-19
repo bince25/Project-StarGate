@@ -189,11 +189,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7938535354116305975, guid: 604bcce078b4bc346befe1c9eda99f00, type: 3}
   m_PrefabInstance: {fileID: 27840472}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &93661426 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 3684229361921023283, guid: 6507441f3c7c74ac2ba92101f0ed89b9, type: 3}
-  m_PrefabInstance: {fileID: 5335419941533531121}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &113516979
 GameObject:
   m_ObjectHideFlags: 0
@@ -914,7 +909,7 @@ GameObject:
   - component: {fileID: 417331346}
   m_Layer: 0
   m_Name: Boss
-  m_TagString: Untagged
+  m_TagString: Boss
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -956,6 +951,7 @@ MonoBehaviour:
   bossHealth: 100
   meteorPrefab: {fileID: 2433282508537954060, guid: 3ef3ae421f71c5c4e97fe12dc2fc6312, type: 3}
   particleSystemPrefab: {fileID: 5824670795371433373, guid: f6fd568b816c64943a44efc3add3a881, type: 3}
+  killedPlayers: 0
   legs:
   - {fileID: 531174779}
   - {fileID: 2018863513}
@@ -17743,6 +17739,7 @@ MonoBehaviour:
   moveSpeed: 10
   isDead: 0
   godMode: 0
+  killedByPlayer: 0
 --- !u!1 &1560282578
 GameObject:
   m_ObjectHideFlags: 0
@@ -17776,7 +17773,6 @@ Transform:
   - {fileID: 1919235788}
   - {fileID: 212114716}
   - {fileID: 140752137}
-  - {fileID: 93661426}
   - {fileID: 1991482261}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -53140,6 +53136,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemNotification: {fileID: 2881926526542977570}
   gearCount: 0
+  gearCountText: {fileID: 0}
+  requiredGearCount: 0
 --- !u!1 &1956670289
 GameObject:
   m_ObjectHideFlags: 0
@@ -62594,6 +62592,54 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9809bf1345abc5648af68b3a82653f08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1980332279
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1980332281}
+  - component: {fileID: 1980332280}
+  m_Layer: 0
+  m_Name: LoadManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1980332280
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1980332279}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96bc65bca64424a43bab412097c3c34e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  progressBar: {fileID: 0}
+  progressText: {fileID: 0}
+  background: {fileID: 0}
+  bgMusic: {fileID: 0}
+--- !u!4 &1980332281
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1980332279}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 92.72181, y: 43.680946, z: 0.35019708}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1991482260
 GameObject:
   m_ObjectHideFlags: 0
@@ -63451,7 +63497,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 1560282579}
+    m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 3398616969874292033, guid: 6507441f3c7c74ac2ba92101f0ed89b9, type: 3}
       propertyPath: m_Name
@@ -63475,15 +63521,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3684229361921023283, guid: 6507441f3c7c74ac2ba92101f0ed89b9, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 3684229361921023283, guid: 6507441f3c7c74ac2ba92101f0ed89b9, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 3684229361921023283, guid: 6507441f3c7c74ac2ba92101f0ed89b9, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 3684229361921023283, guid: 6507441f3c7c74ac2ba92101f0ed89b9, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -63763,6 +63809,7 @@ MonoBehaviour:
   moveSpeed: 10
   isDead: 0
   godMode: 0
+  killedByPlayer: 0
 --- !u!212 &8585569957393046831
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -63828,3 +63875,5 @@ SceneRoots:
   - {fileID: 113516980}
   - {fileID: 322426123}
   - {fileID: 417331345}
+  - {fileID: 1980332281}
+  - {fileID: 5335419941533531121}

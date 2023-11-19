@@ -145,8 +145,8 @@ public class PlayerController : MonoBehaviour
         }
         isDead = true;
         SoundManager.Instance.PlayPlayerDeathSound();
-        gameObject.SetActive(false);
         LoadLevel((Levels)SceneManager.GetActiveScene().buildIndex);
+        gameObject.SetActive(false);
     }
 
     public void LoadLevel(Levels level)

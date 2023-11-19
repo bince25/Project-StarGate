@@ -25,6 +25,7 @@ public class Player : MonoBehaviour
                 playersSword = child.gameObject;
             }
         }
+        killedByPlayer = false;
     }
 
     protected virtual void Start()
@@ -77,11 +78,12 @@ public class Player : MonoBehaviour
 
     protected virtual void OnTriggerEnter2D(Collider2D other)
     {
+        GameObject boss = GameObject.FindGameObjectWithTag("Boss");
         if (other.CompareTag("Gear"))
         {
             other.gameObject.GetComponent<GearController>().GetCollected();
         }
-        else if (other.CompareTag("Sword") && (!other.transform.parent.gameObject.CompareTag("Player") || (other.transform.parent.gameObject.name != this.gameObject.name)))
+        else if (other.CompareTag("Sword") && (!other.transform.parent.gameObject.CompareTag("Player") || boss == null))
         {
             killedByPlayer = true;
             Die();
@@ -94,6 +96,7 @@ public class Player : MonoBehaviour
 
     protected virtual void Die()
     {
+
         if (godMode)
         {
             return;
@@ -105,18 +108,9 @@ public class Player : MonoBehaviour
         isDead = true;
         SoundManager.Instance.PlayPlayerDeathSound();
         gameObject.SetActive(false);
-
-        if (!killedByPlayer)
-        {
-            LoadLevel((Levels)SceneManager.GetActiveScene().buildIndex);
-        }
     }
 
-    public void LoadLevel(Levels level)
-    {
-        Debug.Log("Loading level " + (int)level);
-        LoadManager.Instance.LoadSceneWithTransition(level);
-    }
+
 
     protected virtual string GetHorizontalInput()
     {

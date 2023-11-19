@@ -19,7 +19,6 @@ public class MeteorController : MonoBehaviour
         {
             // Apply damage to the player
             Destroy(other.gameObject);
-
             // Destroy the meteor upon collision with a player
             Destroy(gameObject);
         }

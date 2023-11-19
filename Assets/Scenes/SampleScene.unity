@@ -3780,6 +3780,10 @@ PrefabInstance:
       propertyPath: m_LocalBounds.m_Extent.y
       value: 1.2126
       objectReference: {fileID: 0}
+    - target: {fileID: 8892035416388888745, guid: 181ec8d61d950af4c894f5b669b90eaa, type: 3}
+      propertyPath: godMode
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 3659231310844726971, guid: 181ec8d61d950af4c894f5b669b90eaa, type: 3}
