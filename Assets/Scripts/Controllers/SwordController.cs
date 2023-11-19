@@ -52,6 +52,10 @@ public class SwordController : MonoBehaviour
         StartCoroutine(AdjustSpeed(targetSpeed, duration));
     }
 
+    private void SetSpeed(float speed)
+    {
+        currentRotationSpeed = speed;
+    }
     private IEnumerator AdjustSpeed(float targetSpeed, float duration)
     {
         float time = 0;
@@ -333,6 +337,13 @@ public class SwordController : MonoBehaviour
                 break;
         }
         SwordManager.Instance.UpdateDurabilityUI();
+        if (durability <= 0)
+        {
+            if (isPlayerSword)
+            {
+                SetSpeed(defaultRotationSpeed / 2);
+            }
+        }
     }
 
 
