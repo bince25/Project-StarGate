@@ -62,6 +62,8 @@ public class SoundManager : MonoBehaviour
         AudioClip clip = clips[Random.Range(0, clips.Length)];
         AudioSource source = GetAvailableAudioSource();
 
+        if (source == null) return;
+
         if (group != null)
         {
             source.outputAudioMixerGroup = group;
@@ -82,7 +84,10 @@ public class SoundManager : MonoBehaviour
                 return source;
             }
         }
-        return null; // Consider expanding the pool size if this happens
+        // create a new audio source if all are in use
+        AudioSource newSource = gameObject.AddComponent<AudioSource>();
+        audioSources.Add(newSource);
+        return newSource;
     }
 
     public void PlayEnemyHitSound() { PlaySound(enemyHitSounds, soundEffectGroup); }
