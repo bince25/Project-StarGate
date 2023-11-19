@@ -136,10 +136,12 @@ MonoBehaviour:
   weight: 1
   defaultRotationSpeed: 300
   collisionParticles: {fileID: 7114707331762081372, guid: dc4300f7519e15f419b671362aac2371, type: 3}
+  bloodParticle: {fileID: 3486553107748601626, guid: bc98890f6028f444eaa7789bde5e2eeb, type: 3}
   swordType: 1
   durability: 100
   damage: 1
   edgeOfSword: {x: 0, y: 0, z: 0}
+  isPlayerSword: 0
 --- !u!61 &1357076649532964723
 BoxCollider2D:
   m_ObjectHideFlags: 0

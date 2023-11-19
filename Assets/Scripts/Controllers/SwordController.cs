@@ -12,6 +12,7 @@ public class SwordController : MonoBehaviour
     private float currentRotationSpeed; // ms^-1
     private bool isReversed = false;
     public GameObject collisionParticles;
+    public GameObject bloodParticle;
     public SwordsEnum swordType;
     public float durability = SwordConstants.SWORD_DEFAULT_DURABILITY;
     public float damage = SwordConstants.SWORD_DEFAULT_DAMAGE;
@@ -158,7 +159,27 @@ public class SwordController : MonoBehaviour
             ReverseRotation();
         }
     }
+    private void CreateBloodParticles(Collider2D collider)
+    {
+        // Get the contact points from the collision
+        contact = collider.bounds.ClosestPoint(collider.transform.position);
+        // Change the rotation direction
+        // Play the particle effect
+        if (bloodParticle != null && isPlayerSword)
+        {
+            if (contact != null)
+            {
+                Debug.Log("Contact point: " + contact);
+                GameObject particles = Instantiate(bloodParticle, contact, Quaternion.identity);
 
+                // Get the particle system component from the instantiated prefab
+                ParticleSystem particlesSystem = particles.GetComponent<ParticleSystem>();
+
+                // Destroy the instantiated object after the duration of the particle system
+                Destroy(particles, particlesSystem.main.duration + 0.3f);
+            }
+        }
+    }
     private void CreateSparkParticles(Collider2D collider)
     {
         // Get the contact points from the collision
@@ -230,6 +251,7 @@ public class SwordController : MonoBehaviour
     {
         EnemyController enemy = collider.GetComponent<EnemyController>();
         enemy.TakeDamage(damage);
+        CreateBloodParticles(collider);
         /* ApplyPlayerRecoil(1f); */
         switch (enemy.enemyType)
         {
