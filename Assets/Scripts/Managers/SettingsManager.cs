@@ -114,12 +114,15 @@ public class SettingsManager : MonoBehaviour
     {
         float soundLevel = soundSlider.value;
         SetVolume(soundLevel);
+
+        // Optionally save settings immediately when changed
         SaveSettings();
     }
 
     public void SetVolume(float volume)
     {
-        audioMixer.SetFloat("MasterVolume", volume);
+        SoundManager.Instance.SetMasterVolume(volume);
+        SoundManager.Instance.audioMixer.SetFloat("SoundEffectVolume", -30);
     }
 
     public void SetQuality(int qualityIndex)
