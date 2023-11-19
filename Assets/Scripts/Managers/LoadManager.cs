@@ -66,7 +66,7 @@ public class LoadManager : MonoBehaviour
 
             yield return null;
         }
-        SoundManager.Instance.StopMusic(audioSource, 0.5f);
+        SoundManager.Instance.StopMusic(audioSource);
     }
 
     public void SetBackground(Sprite backgroundSprite)
