@@ -15,6 +15,11 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D rb;
     public GameObject playersSword;
 
+    [SerializeField]
+    private int chestGearCount = 20;
+
+    public bool hasKey = false;
+
     void Awake()
     {
         if (Instance == null)
@@ -107,6 +112,23 @@ public class PlayerController : MonoBehaviour
         else if (other.CompareTag("Bullet"))
         {
             Die();
+        }
+        else if (other.CompareTag("Key"))
+        {
+            SoundManager.Instance.PlayGearCollectSound();
+            hasKey = true;
+            Destroy(other.gameObject);
+        }
+        else if (other.CompareTag("Chest"))
+        {
+            if (hasKey)
+            {
+                SoundManager.Instance.PlayGearCollectSound();
+                ResourceManager.Instance.AddGear(chestGearCount);
+                Destroy(other.gameObject);
+                hasKey = false;
+            }
+
         }
     }
 

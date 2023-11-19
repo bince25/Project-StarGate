@@ -16,6 +16,8 @@ TagManager:
   - Leg
   - Door
   - Ground
+  - Key
+  - Chest
   layers:
   - Default
   - TransparentFX
