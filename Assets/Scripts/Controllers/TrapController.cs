@@ -9,6 +9,9 @@ public class TrapController : MonoBehaviour
 
     private float timer;
 
+    public bool isActive = false;
+    public bool disabled = false;
+
     void Start()
     {
         switch (trapType)
@@ -43,13 +46,14 @@ public class TrapController : MonoBehaviour
     void ActivateTrap()
     {
         // Activate the trap and play animation
-        animator.SetBool("isActivated", true);
+        if (!disabled) animator.SetBool("isActivated", true);
+        if (isActive) animator.SetBool("isAlwaysActive", true);
 
         // Optionally, add a delay before deactivating for the animation to play
-        StartCoroutine(DeactivateTrap());
+        if (!isActive) StartCoroutine(DeactivateTrap());
     }
 
-    IEnumerator DeactivateTrap()
+    public IEnumerator DeactivateTrap()
     {
         yield return new WaitForSeconds(1f); // Wait for the animation to play
         animator.SetBool("isActivated", false);

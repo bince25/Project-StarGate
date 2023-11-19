@@ -14,6 +14,7 @@ TagManager:
   - FxTemporaire
   - Wizard
   - Leg
+  - Door
   layers:
   - Default
   - TransparentFX
