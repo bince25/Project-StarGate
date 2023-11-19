@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
 public class SwordManager : MonoBehaviour
 
@@ -8,7 +10,8 @@ public class SwordManager : MonoBehaviour
     public static SwordManager Instance;
     public GameObject[] swords;
     public GameObject playerSword = null;
-    // Start is called before the first frame update
+    public Slider swordDurabilitySlider;
+    public TextMeshProUGUI textMeshProUGUI;
 
     void Awake()
     {
@@ -33,4 +36,10 @@ public class SwordManager : MonoBehaviour
     {
         return playerSword;
     }
+    public void UpdateDurabilityUI()
+    {
+        textMeshProUGUI.text = PlayerController.Instance.playersSword.name.ToString();
+        swordDurabilitySlider.value = PlayerController.Instance.playersSword.GetComponent<SwordController>().durability;
+    }
+
 }

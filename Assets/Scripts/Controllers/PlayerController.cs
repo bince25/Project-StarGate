@@ -45,6 +45,7 @@ public class PlayerController : MonoBehaviour
                 }
             }
         }
+        SwordManager.Instance.BindPlayerSword(playersSword);
         // Get the Animator component from the "Legs" child object
         legsAnimator = spritesObject.transform.GetChild(spritesObject.transform.childCount - 1).GetComponent<Animator>();
     }
@@ -142,6 +143,8 @@ public class PlayerController : MonoBehaviour
         newSword.transform.parent = transform;
 
         // Update the currentSwordPrefab reference
-        playersSword = newSwordPrefab;
+        playersSword = newSword;
+        playersSword.name = newSwordPrefab.name;
+        playersSword.GetComponent<SwordController>().resetDurability();
     }
 }

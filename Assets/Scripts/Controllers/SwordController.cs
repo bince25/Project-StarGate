@@ -1,7 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class SwordController : MonoBehaviour
 {
@@ -19,19 +21,24 @@ public class SwordController : MonoBehaviour
 
     private Vector3 contact = new Vector3();
 
-    private bool isPlayerSword = false;
+    public bool isPlayerSword = false;
+
+
 
     void Start()
     {
         currentRotationSpeed = defaultRotationSpeed;
         edgeOfSword = GetComponentInChildren<Transform>().position;
         isPlayerSword = transform.parent.gameObject.CompareTag("Player");
+        SwordManager.Instance.UpdateDurabilityUI();
     }
 
     void Update()
     {
         float direction = isReversed ? -1 : 1;
         transform.RotateAround(transform.parent.position, Vector3.forward, direction * currentRotationSpeed * Time.deltaTime);
+        isPlayerSword = transform.parent.gameObject.CompareTag("Player");
+
     }
 
     public void ReverseRotation()
@@ -112,7 +119,8 @@ public class SwordController : MonoBehaviour
         BossLegController leg = collider.GetComponent<BossLegController>();
         leg.DamageLeg(damage);
         ReverseRotation();
-        HandleDurabilityChange(CollisionType.EnemyBoss);
+        if (isPlayerSword)
+            HandleDurabilityChange(CollisionType.EnemyBoss);
         Camera.main.GetComponent<CameraController>().TriggerShake();
         HandleSoundEffect(CollisionType.Sword);
     }
@@ -124,8 +132,8 @@ public class SwordController : MonoBehaviour
         HandleSoundEffect(CollisionType.Sword);
         CreateSparkParticles(collider);
         HandleMomentumCollision(otherSword);
-
-        HandleDurabilityChange(CollisionType.Sword);
+        if (isPlayerSword)
+            HandleDurabilityChange(CollisionType.Sword);
 
         Camera.main.GetComponent<CameraController>().TriggerShake();
         /* ApplyPlayerRecoil(2.5f); */
@@ -243,12 +251,11 @@ public class SwordController : MonoBehaviour
     private void HandleWallCollision(Collider2D collider)
     {
         ReverseRotation();
-        HandleDurabilityChange(CollisionType.Wall);
         HandleWallSpark();
         HandleSoundEffect(CollisionType.Wall);
         if (isPlayerSword)
         {
-
+            HandleDurabilityChange(CollisionType.Wall);
             Camera.main.GetComponent<CameraController>().TriggerShake();
         }
     }
@@ -256,18 +263,24 @@ public class SwordController : MonoBehaviour
     private void HandleObstacleCollision(Collider2D collider)
     {
         ReverseRotation();
-        HandleDurabilityChange(CollisionType.Obstacle);
+        if (isPlayerSword)
+            HandleDurabilityChange(CollisionType.Obstacle);
     }
 
     private void HandleBulletCollision(Collider2D collider)
     {
         CreateSparkParticles(collider);
-        HandleDurabilityChange(CollisionType.Bullet);
+        if (isPlayerSword)
+            HandleDurabilityChange(CollisionType.Bullet);
         //bullet.Reflect();
         HandleSoundEffect(CollisionType.Bullet);
         collider.gameObject.GetComponent<BulletController>().ReturnToPool();
     }
 
+    public void resetDurability()
+    {
+        durability = SwordConstants.SWORD_DEFAULT_DURABILITY;
+    }
     private void HandleDurabilityChange(CollisionType collisionType)
     {
         switch (collisionType)
@@ -297,7 +310,9 @@ public class SwordController : MonoBehaviour
                 durability -= SwordConstants.BULLET_DEFAULT_DURABILITY_LOSS;
                 break;
         }
+        SwordManager.Instance.UpdateDurabilityUI();
     }
+
 
     /* private void ApplyPlayerRecoil(float recoilDistance)
     {
