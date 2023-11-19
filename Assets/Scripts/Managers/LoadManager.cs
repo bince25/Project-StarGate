@@ -63,8 +63,8 @@ public class LoadManager : MonoBehaviour
         while (!operation.isDone)
         {
             float progress = Mathf.Clamp01(operation.progress / 0.9f);
-            progressBar.value = progress;
-            progressText.text = (int)(progress * 100f) + "%";
+            if (progressBar != null) progressBar.value = progress;
+            if (progressText != null) progressText.text = (int)(progress * 100f) + "%";
 
             yield return null;
         }

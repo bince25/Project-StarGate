@@ -441,7 +441,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1560282579}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &212114717
 MonoBehaviour:
@@ -3826,6 +3826,7 @@ Transform:
   - {fileID: 1919235788}
   - {fileID: 140752137}
   - {fileID: 1018342062}
+  - {fileID: 212114716}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1654060959
@@ -71859,6 +71860,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1115510665}
     m_Modifications:
+    - target: {fileID: 815422205304644190, guid: 788698e741b7f4006a956ae8fb099a07, type: 3}
+      propertyPath: m_TagString
+      value: Slider
+      objectReference: {fileID: 0}
+    - target: {fileID: 4255082652363980252, guid: 788698e741b7f4006a956ae8fb099a07, type: 3}
+      propertyPath: m_TagString
+      value: SwordName
+      objectReference: {fileID: 0}
     - target: {fileID: 5253465151832234441, guid: 788698e741b7f4006a956ae8fb099a07, type: 3}
       propertyPath: m_Name
       value: PlayerFrame
@@ -72412,7 +72421,6 @@ SceneRoots:
   - {fileID: 1115510665}
   - {fileID: 1991482261}
   - {fileID: 5335419941533531121}
-  - {fileID: 212114716}
   - {fileID: 1560282579}
   - {fileID: 1405461055}
   - {fileID: 113516980}

@@ -38,6 +38,18 @@ public class SwordManager : MonoBehaviour
     }
     public void UpdateDurabilityUI()
     {
+        Debug.Log(PlayerController.Instance);
+        if (PlayerController.Instance.playersSword == null)
+        {
+            return;
+        }
+
+        if (textMeshProUGUI == null || swordDurabilitySlider == null)
+        {
+            textMeshProUGUI = GameObject.FindGameObjectWithTag("SwordName").GetComponent<TextMeshProUGUI>();
+            swordDurabilitySlider = GameObject.FindGameObjectWithTag("Slider").GetComponent<Slider>();
+        }
+
         textMeshProUGUI.text = PlayerController.Instance.playersSword.name.ToString();
         swordDurabilitySlider.value = PlayerController.Instance.playersSword.GetComponent<SwordController>().durability;
     }

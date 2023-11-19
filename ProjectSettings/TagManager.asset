@@ -19,6 +19,8 @@ TagManager:
   - Key
   - Chest
   - Boss
+  - Slider
+  - SwordName
   layers:
   - Default
   - TransparentFX
