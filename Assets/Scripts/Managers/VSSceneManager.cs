@@ -7,6 +7,7 @@ public class VSSceneManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        PlayerPrefs.SetInt("Arena", 1);
         DialogueManager.Instance.OpenDialogueBox("Now Only One Of You Will Survive !!!");
         StartCoroutine(CloseDialogue());
     }

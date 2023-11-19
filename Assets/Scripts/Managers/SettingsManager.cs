@@ -15,6 +15,8 @@ public class SettingsManager : MonoBehaviour
 
     public Slider soundSlider;
 
+    public Toggle fullScreenToggle;
+
     void Awake()
     {
         if (Instance == null)
@@ -57,6 +59,17 @@ public class SettingsManager : MonoBehaviour
 
         soundSlider.onValueChanged.AddListener(delegate { SetSoundLevel(); });
         resolutionDropdown.onValueChanged.AddListener(delegate { SetResolution(resolutionDropdown.value); });
+
+        // Initialize the toggle to reflect the current full screen state
+        fullScreenToggle.isOn = Screen.fullScreen;
+
+        // Subscribe to toggle value changes
+        fullScreenToggle.onValueChanged.AddListener(SetFullScreen);
+    }
+
+    public void SetFullScreen(bool isFullScreen)
+    {
+        Screen.fullScreen = isFullScreen;
     }
 
     public void SetSoundLevel()
