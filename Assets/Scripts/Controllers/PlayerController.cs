@@ -114,6 +114,10 @@ public class PlayerController : MonoBehaviour
         {
             Die();
         }
+        else if (other.CompareTag("Enemy"))
+        {
+            Die();
+        }
         else if (other.CompareTag("Key"))
         {
             SoundManager.Instance.PlayGearCollectSound();
