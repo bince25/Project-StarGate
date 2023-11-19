@@ -7,7 +7,7 @@ public class SpawnManager : MonoBehaviour
     public GameObject basicEnemyPrefab;
     public GameObject normalEnemyPrefab;
     public float spawnInterval = 5f;
-    public int maxEnemies = 10;
+    public int maxEnemies = 100;
     public float spawnRadius = 20f; // Radius around the SpawnManager to consider for spawning
 
     private int currentEnemyCount = 0;
