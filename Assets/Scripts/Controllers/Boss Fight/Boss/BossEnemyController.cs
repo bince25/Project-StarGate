@@ -183,6 +183,7 @@ public class BossEnemyController : MonoBehaviour
     {
         // Implement boss defeat logic, e.g., play an animation, show a victory screen, etc.
         Debug.Log("Boss defeated!");
+        LoadLevel((Levels)SceneManager.GetActiveScene().buildIndex + 1);
     }
 
     public void DestroyLeg()
