@@ -1,12 +1,24 @@
+using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-public class EndLevelController : MonoBehaviour
+public class LevelController : MonoBehaviour
 {
+
+    public AudioClip levelMusic;
+    public AudioSource audioSource;
+
+    void Start()
+    {
+        audioSource = SoundManager.Instance.PlayMusic(levelMusic, 1.5f);
+    }
+
     void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Player"))
         {
-            EndLevel();
+            SoundManager.Instance.StopMusic(audioSource, 0.5f);
+            StartCoroutine(EndLevelCoroutine());
         }
     }
 
@@ -14,7 +26,13 @@ public class EndLevelController : MonoBehaviour
     {
         if (ResourceManager.Instance.gearCount > 0)
         {
-            LoadManager.Instance.LoadSceneWithTransition(Levels.Level2);
+            LoadManager.Instance.LoadSceneWithTransition((Levels)(SceneManager.GetActiveScene().buildIndex + 1));
         }
+    }
+
+    IEnumerator EndLevelCoroutine()
+    {
+        yield return new WaitForSeconds(.7f);
+        LoadManager.Instance.LoadSceneWithTransition((Levels)(SceneManager.GetActiveScene().buildIndex + 1));
     }
 }

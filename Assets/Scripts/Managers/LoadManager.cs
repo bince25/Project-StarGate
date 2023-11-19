@@ -11,6 +11,8 @@ public class LoadManager : MonoBehaviour
     public Slider progressBar;
     public TMP_Text progressText;
     public Image background;
+    public AudioClip bgMusic;
+    private AudioSource audioSource;
 
     private Levels loadingSceneName = Levels.LoadingScene; // Replace with your actual loading scene name
 
@@ -39,7 +41,7 @@ public class LoadManager : MonoBehaviour
 
     public void LoadSceneWithTransition(Levels sceneName)
     {
-
+        audioSource = SoundManager.Instance.PlayMusic(bgMusic, 0.5f);
         SceneManager.LoadScene((int)loadingSceneName);
         // First, load the loading scene
 
@@ -49,7 +51,7 @@ public class LoadManager : MonoBehaviour
 
     IEnumerator LoadAsynchronously(Levels sceneName)
     {
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(1.5f);
 
         progressBar = LoadScreenUIManager.Instance.progressBar;
         progressText = LoadScreenUIManager.Instance.progressText;
@@ -64,6 +66,7 @@ public class LoadManager : MonoBehaviour
 
             yield return null;
         }
+        SoundManager.Instance.StopMusic(audioSource, 0.5f);
     }
 
     public void SetBackground(Sprite backgroundSprite)

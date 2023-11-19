@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.Audio;
+using System.Collections;
 
 public class SoundManager : MonoBehaviour
 {
@@ -122,6 +123,35 @@ public class SoundManager : MonoBehaviour
         return musicSource;
     }
 
+    public AudioSource PlayMusic(AudioClip music, float fadeIn)
+    {
+        AudioSource musicSource = GetAvailableAudioSource();
+
+        musicSource.clip = music;
+        musicSource.loop = true; // Usually, music tracks are looped
+        musicSource.outputAudioMixerGroup = musicGroup;
+        musicSource.Play();
+
+        StartCoroutine(FadeInAudio(musicSource, fadeIn));
+
+        return musicSource;
+    }
+
+    IEnumerator FadeInAudio(AudioSource audioSource, float fadeDuration)
+    {
+        float elapsedTime = 0f;
+
+        while (elapsedTime < fadeDuration)
+        {
+            audioSource.volume = Mathf.Lerp(0f, 1f, elapsedTime / fadeDuration);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        // Ensure the volume is exactly 1 at the end
+        audioSource.volume = 1f;
+    }
+
     public void StopMusic()
     {
         foreach (var source in audioSources)
@@ -131,6 +161,34 @@ public class SoundManager : MonoBehaviour
                 source.Stop();
             }
         }
+    }
+
+    public void StopMusic(AudioSource musicSource)
+    {
+        musicSource.Stop();
+    }
+    public void StopMusic(AudioSource musicSource, float fadeOut)
+    {
+        StartCoroutine(FadeOutAudio(musicSource, fadeOut));
+    }
+
+    IEnumerator FadeOutAudio(AudioSource audioSource, float fadeDuration)
+    {
+        float tempVoume = audioSource.volume;
+        float elapsedTime = 0f;
+
+        while (elapsedTime < fadeDuration - 1)
+        {
+            audioSource.volume = Mathf.Lerp(1f, 0f, elapsedTime / (fadeDuration - 1));
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        // Ensure the volume is exactly 0 at the end
+        audioSource.volume = 0f;
+        audioSource.Stop(); // Stop the audio source after fading out
+        audioSource.clip = null; // Remove the clip from the audio source
+        audioSource.volume = tempVoume; // Reset the volume to the original value
     }
 
     public void SetMasterVolume(float volume)
