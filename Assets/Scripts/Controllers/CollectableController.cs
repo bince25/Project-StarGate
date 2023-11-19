@@ -43,7 +43,7 @@ public class CollectableController : MonoBehaviour
 
     void OnTriggerStay2D(Collider2D other)
     {
-        if (other.CompareTag("Player") && Input.GetKeyDown(KeyCode.E))
+        if (other.CompareTag("Player") && Input.GetKey(KeyCode.E))
         {
             // Call a method in the PlayerController to switch the sword prefab
             other.GetComponent<PlayerController>().SwitchSwordPrefab(replacementSwordPrefab);

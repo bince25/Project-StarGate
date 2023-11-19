@@ -40,11 +40,12 @@ public class SoundFadeInOut : MonoBehaviour
 
     IEnumerator FadeOutAudio()
     {
+        float tempVoume = audioSource.volume;
         float elapsedTime = 0f;
 
-        while (elapsedTime < fadeDuration)
+        while (elapsedTime < fadeDuration - 1)
         {
-            audioSource.volume = Mathf.Lerp(1f, 0f, elapsedTime / fadeDuration);
+            audioSource.volume = Mathf.Lerp(1f, 0f, elapsedTime / (fadeDuration - 1));
             elapsedTime += Time.deltaTime;
             yield return null;
         }
@@ -52,6 +53,8 @@ public class SoundFadeInOut : MonoBehaviour
         // Ensure the volume is exactly 0 at the end
         audioSource.volume = 0f;
         audioSource.Stop(); // Stop the audio source after fading out
+        audioSource.clip = null; // Remove the clip from the audio source
+        audioSource.volume = tempVoume; // Reset the volume to the original value
     }
 
     // Call this method to trigger the fade-out effect

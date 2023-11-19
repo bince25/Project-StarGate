@@ -27,18 +27,24 @@ public class PlayerController : MonoBehaviour
         {
             rb = gameObject.AddComponent<Rigidbody2D>();
         }
-
-        foreach (Transform child in transform)
-        {
-            if (child.CompareTag("Sword"))
-            {
-                playersSword = child.gameObject;
-            }
-        }
     }
 
     void Start()
     {
+        if (SwordManager.Instance.playerSword != null)
+        {
+            SwitchSwordPrefab(SwordManager.Instance.playerSword);
+        }
+        else
+        {
+            foreach (Transform child in transform)
+            {
+                if (child.CompareTag("Sword"))
+                {
+                    playersSword = child.gameObject;
+                }
+            }
+        }
         // Get the Animator component from the "Legs" child object
         legsAnimator = spritesObject.transform.GetChild(spritesObject.transform.childCount - 1).GetComponent<Animator>();
     }
@@ -119,6 +125,7 @@ public class PlayerController : MonoBehaviour
     }
     public void SwitchSwordPrefab(GameObject newSwordPrefab)
     {
+        SwordManager.Instance.BindPlayerSword(newSwordPrefab);
         foreach (Transform child in transform)
         {
             if (child.CompareTag("Sword"))

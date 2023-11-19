@@ -4937,6 +4937,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   creditPanel: {fileID: 525293050}
+  soundFadeInOut: {fileID: 385595851}
 --- !u!1 &1012437949
 GameObject:
   m_ObjectHideFlags: 0
@@ -5898,7 +5899,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8395025236264610895, guid: 43e29144da9084842b11631c97ecb1e9, type: 3}
       propertyPath: m_Value
-      value: 4.97
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 8395025236264610895, guid: 43e29144da9084842b11631c97ecb1e9, type: 3}
       propertyPath: m_MaxValue
@@ -6876,7 +6877,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1591508280134102088, guid: db94ecc86a23c1c41a836156ea391d88, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 1591508280134102088, guid: db94ecc86a23c1c41a836156ea391d88, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode

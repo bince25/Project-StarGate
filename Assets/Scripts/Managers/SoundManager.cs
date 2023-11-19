@@ -60,14 +60,15 @@ public class SoundManager : MonoBehaviour
 
         AudioClip clip = clips[Random.Range(0, clips.Length)];
         AudioSource source = GetAvailableAudioSource();
-        if (source != null)
-        {
-            source.PlayOneShot(clip);
-        }
 
         if (group != null)
         {
             source.outputAudioMixerGroup = group;
+        }
+
+        if (source != null)
+        {
+            source.PlayOneShot(clip);
         }
     }
 
@@ -151,6 +152,9 @@ public class SoundManager : MonoBehaviour
         // Set the volume on the mixer. Clamp it just to be safe.
         volumeInDB = Mathf.Max(volumeInDB, -80);
         audioMixer.SetFloat("MasterVolume", volumeInDB);
+        audioMixer.SetFloat("MusicVolume", volumeInDB);
+        audioMixer.SetFloat("SoundEffectVolume", volumeInDB);
+        audioMixer.SetFloat("UIVolume", volumeInDB);
     }
 
 

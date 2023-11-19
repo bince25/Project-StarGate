@@ -412,6 +412,12 @@ MonoBehaviour:
   spawnInterval: 5
   maxEnemies: 10
   spawnRadius: 20
+  groundLayerMask:
+    serializedVersion: 2
+    m_Bits: 128
+  wallLayerMask:
+    serializedVersion: 2
+    m_Bits: 64
   particleSystemPrefab: {fileID: 5985634496115995773, guid: 463cf9f7af4680240898f6aeba3fe3e6, type: 3}
 --- !u!1001 &169106172
 PrefabInstance:
@@ -421,6 +427,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -4939314501912393048, guid: fde85032678af4401b683f9d78ed4b9d, type: 3}
+      propertyPath: autoRepath.mode
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -4939314501912393048, guid: fde85032678af4401b683f9d78ed4b9d, type: 3}
+      propertyPath: autoRepath.interval
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -4939314501912393048, guid: fde85032678af4401b683f9d78ed4b9d, type: 3}
+      propertyPath: interpolatePathSwitches
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 570346778870848114, guid: fde85032678af4401b683f9d78ed4b9d, type: 3}
       propertyPath: m_SpriteTilingProperty.oldSize.x
       value: 4
@@ -696,7 +714,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   version: 1
   data:
-    dataString: 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
+    dataString: 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
     upgradeData: 
     file_cachedStartup: {fileID: 0}
     data_cachedStartup: 
@@ -1342,7 +1360,7 @@ Transform:
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 91.8, y: 32.51, z: -10}
+  m_LocalPosition: {x: 27.1, y: -9.1, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -11093,9 +11111,10 @@ GameObject:
   - component: {fileID: 1907097765}
   - component: {fileID: 1907097764}
   - component: {fileID: 1907097766}
-  m_Layer: 0
+  - component: {fileID: 1907097767}
+  m_Layer: 7
   m_Name: GroundTilemap
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -11110,7 +11129,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -2.8358, y: 0.123, z: 0}
-  m_LocalScale: {x: 0.98672444, y: 0.9978, z: 0.9978}
+  m_LocalScale: {x: 0.98672444, y: 0.9978, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1405461055}
@@ -58970,6 +58989,42 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9809bf1345abc5648af68b3a82653f08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!19719996 &1907097767
+TilemapCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1907097762}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_MaximumTileChangeCount: 1000
+  m_ExtrusionFactor: 0
+  m_UseDelaunayMesh: 0
 --- !u!1 &1919235787
 GameObject:
   m_ObjectHideFlags: 0

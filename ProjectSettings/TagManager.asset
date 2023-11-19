@@ -15,6 +15,7 @@ TagManager:
   - Wizard
   - Leg
   - Door
+  - Ground
   layers:
   - Default
   - TransparentFX
@@ -23,7 +24,7 @@ TagManager:
   - Water
   - UI
   - Walls
-  - 
+  - Ground
   - 
   - 
   - 

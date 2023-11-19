@@ -9,6 +9,8 @@ public class MainMenuManager : MonoBehaviour
 
     [SerializeField]
     private GameObject creditPanel;
+    [SerializeField]
+    private SoundFadeInOut soundFadeInOut;
 
     void Awake()
     {
@@ -45,12 +47,19 @@ public class MainMenuManager : MonoBehaviour
 
     public void PlayGame()
     {
-        LoadLevel(Levels.Level1);
+        soundFadeInOut.StopAudioWithFadeOut();
+        StartCoroutine(PlayGameCoroutine());
     }
 
     public void LoadLevel(Levels level)
     {
         Debug.Log("Loading level " + (int)level);
         LoadManager.Instance.LoadSceneWithTransition(level);
+    }
+
+    IEnumerator PlayGameCoroutine()
+    {
+        yield return new WaitForSeconds(1.5f);
+        LoadLevel(Levels.Level1);
     }
 }

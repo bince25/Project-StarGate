@@ -32,6 +32,7 @@ public class SettingsManager : MonoBehaviour
 
     void Start()
     {
+        LoadSettings();
         // Resolution settings initialization
         resolutions = Screen.resolutions;
         resolutionDropdown.ClearOptions();
@@ -56,8 +57,6 @@ public class SettingsManager : MonoBehaviour
 
         soundSlider.onValueChanged.AddListener(delegate { SetSoundLevel(); });
         resolutionDropdown.onValueChanged.AddListener(delegate { SetResolution(resolutionDropdown.value); });
-
-        LoadSettings();
     }
 
     public void SetSoundLevel()
@@ -72,6 +71,7 @@ public class SettingsManager : MonoBehaviour
     public void SetVolume(float volume)
     {
         SoundManager.Instance.SetMasterVolume(volume);
+        SoundManager.Instance.audioMixer.SetFloat("SoundEffectVolume", -30);
     }
 
     public void SetQuality(int qualityIndex)
@@ -93,8 +93,7 @@ public class SettingsManager : MonoBehaviour
     public void SaveSettings()
     {
         // Example: Save volume level
-        float volumeLevel;
-        SoundManager.Instance.audioMixer.GetFloat("MasterVolume", out volumeLevel);
+        float volumeLevel = soundSlider.value;
         PlayerPrefs.SetFloat("VolumeLevel", volumeLevel);
 
         // Save other settings similarly
@@ -109,17 +108,21 @@ public class SettingsManager : MonoBehaviour
         if (PlayerPrefs.HasKey("VolumeLevel"))
         {
             float volumeLevel = PlayerPrefs.GetFloat("VolumeLevel");
+            Debug.Log("Loaded Volume Level: " + volumeLevel);
             SetVolume(volumeLevel);
             soundSlider.value = volumeLevel; // Update the UI slider
         }
         else
         {
-            soundSlider.value = GameConstants.DEFAULT_VOLUME_LEVEL; // Or another default value
+            soundSlider.value = GameConstants.DEFAULT_VOLUME_LEVEL; // Default value
+            Debug.Log("Setting Default Volume Level: " + GameConstants.DEFAULT_VOLUME_LEVEL);
             SetSoundLevel();
         }
 
-        // Load and apply other settings...
+
+        // Add similar logs for other settings like resolution, quality, etc.
     }
+
 
     public void ResetToDefaults()
     {

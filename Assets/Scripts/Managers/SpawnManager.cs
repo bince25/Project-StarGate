@@ -13,6 +13,11 @@ public class SpawnManager : MonoBehaviour
     private int currentEnemyCount = 0;
     private Coroutine spawnCoroutine;
 
+    [SerializeField]
+    private LayerMask groundLayerMask;
+    [SerializeField]
+    private LayerMask wallLayerMask;
+
     public GameObject particleSystemPrefab;
 
     void Start()
@@ -58,8 +63,25 @@ public class SpawnManager : MonoBehaviour
     {
         // Check if the point is on a walkable node
         GraphNode node = AstarPath.active.data.graphs[0].GetNearest(point).node;
-        return node != null && node.Walkable;
+        if (node == null || !node.Walkable) return false;
+
+        // Perform a raycast to check the surface type
+        RaycastHit2D hit = Physics2D.Raycast(point, Vector2.up, 1f, groundLayerMask);
+        Debug.DrawRay(point, Vector2.up, Color.red, 1f);
+
+        if (hit.collider != null && hit.collider.gameObject.layer == LayerMask.NameToLayer("Ground"))
+        {
+            // Ensure it's not too close to walls
+            Collider2D[] colliders = Physics2D.OverlapCircleAll(point, 2f, wallLayerMask);
+            if (colliders.Length == 0)
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
+
 
     void SpawnEnemy(Vector2 spawnPoint)
     {
