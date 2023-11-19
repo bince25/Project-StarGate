@@ -6,16 +6,17 @@ using TMPro; // For audio management
 
 public class SettingsManager : MonoBehaviour
 {
-    public SettingsManager Instance { get; private set; }
+    public static SettingsManager Instance { get; private set; }
 
     public AudioMixer audioMixer; // Attach your AudioMixer here
     public TMP_Dropdown resolutionDropdown;
+    public Slider soundSlider;
+    public Toggle fullScreenToggle;
+
+    public Toggle soundEffectsToggle;
+    public Toggle musicToggle;
 
     Resolution[] resolutions;
-
-    public Slider soundSlider;
-
-    public Toggle fullScreenToggle;
 
     void Awake()
     {
@@ -27,15 +28,49 @@ public class SettingsManager : MonoBehaviour
         else if (Instance != this)
         {
             Destroy(gameObject);
-            return;
         }
     }
 
-
     void Start()
     {
+        InitializeSettings();
+    }
+
+    void InitializeSettings()
+    {
         LoadSettings();
-        // Resolution settings initialization
+        InitializeResolutionSettings();
+        InitializeSoundSettings();
+        InitializeFullScreenSettings();
+        InitializeSoundEffectToggle();
+        InitializeMusicToggle();
+    }
+
+    void InitializeSoundEffectToggle()
+    {
+        soundEffectsToggle.onValueChanged.AddListener(SetSoundEffects);
+    }
+
+    void InitializeMusicToggle()
+    {
+        musicToggle.onValueChanged.AddListener(SetMusic);
+    }
+
+    public void SetSoundEffects(bool isEnabled)
+    {
+        audioMixer.SetFloat("SoundEffectVolume", isEnabled ? 0 : -80); // Assuming -80 dB is silence
+        PlayerPrefs.SetInt("SoundEffectsEnabled", isEnabled ? 1 : 0);
+    }
+
+    public void SetMusic(bool isEnabled)
+    {
+        audioMixer.SetFloat("MusicVolume", isEnabled ? 0 : -80); // Assuming -80 dB is silence
+        PlayerPrefs.SetInt("MusicEnabled", isEnabled ? 1 : 0);
+    }
+
+
+    void InitializeResolutionSettings()
+    {
         resolutions = Screen.resolutions;
         resolutionDropdown.ClearOptions();
         List<string> options = new List<string>();
@@ -56,35 +91,35 @@ public class SettingsManager : MonoBehaviour
         resolutionDropdown.AddOptions(options);
         resolutionDropdown.value = currentResolutionIndex;
         resolutionDropdown.RefreshShownValue();
-
-        soundSlider.onValueChanged.AddListener(delegate { SetSoundLevel(); });
         resolutionDropdown.onValueChanged.AddListener(delegate { SetResolution(resolutionDropdown.value); });
+    }
 
-        // Initialize the toggle to reflect the current full screen state
-        fullScreenToggle.isOn = Screen.fullScreen;
+    void InitializeSoundSettings()
+    {
+        soundSlider.onValueChanged.AddListener(delegate { SetSoundLevel(); });
+    }
 
-        // Subscribe to toggle value changes
+    void InitializeFullScreenSettings()
+    {
         fullScreenToggle.onValueChanged.AddListener(SetFullScreen);
     }
 
     public void SetFullScreen(bool isFullScreen)
     {
         Screen.fullScreen = isFullScreen;
+        SaveSettings();
     }
 
     public void SetSoundLevel()
     {
         float soundLevel = soundSlider.value;
         SetVolume(soundLevel);
-
-        // Optionally save settings immediately when changed
         SaveSettings();
     }
 
     public void SetVolume(float volume)
     {
-        SoundManager.Instance.SetMasterVolume(volume);
-        SoundManager.Instance.audioMixer.SetFloat("SoundEffectVolume", -30);
+        audioMixer.SetFloat("MasterVolume", volume);
     }
 
     public void SetQuality(int qualityIndex)
@@ -105,36 +140,42 @@ public class SettingsManager : MonoBehaviour
 
     public void SaveSettings()
     {
-        // Example: Save volume level
-        float volumeLevel = soundSlider.value;
-        PlayerPrefs.SetFloat("VolumeLevel", volumeLevel);
-
-        // Save other settings similarly
-        // ...
-
+        PlayerPrefs.SetFloat("VolumeLevel", soundSlider.value);
+        PlayerPrefs.SetInt("FullScreen", fullScreenToggle.isOn ? 1 : 0);
         PlayerPrefs.Save();
     }
 
     void LoadSettings()
     {
-        // Sound settings
         if (PlayerPrefs.HasKey("VolumeLevel"))
         {
             float volumeLevel = PlayerPrefs.GetFloat("VolumeLevel");
-            Debug.Log("Loaded Volume Level: " + volumeLevel);
             SetVolume(volumeLevel);
-            soundSlider.value = volumeLevel; // Update the UI slider
+            soundSlider.value = volumeLevel;
         }
-        else
+
+        if (PlayerPrefs.HasKey("FullScreen"))
         {
-            soundSlider.value = GameConstants.DEFAULT_VOLUME_LEVEL; // Default value
-            Debug.Log("Setting Default Volume Level: " + GameConstants.DEFAULT_VOLUME_LEVEL);
-            SetSoundLevel();
+            bool isFullScreen = PlayerPrefs.GetInt("FullScreen") == 1;
+            SetFullScreen(isFullScreen);
+            fullScreenToggle.isOn = isFullScreen;
         }
 
+        if (PlayerPrefs.HasKey("SoundEffectsEnabled"))
+        {
+            bool soundEffectsEnabled = PlayerPrefs.GetInt("SoundEffectsEnabled") == 1;
+            soundEffectsToggle.isOn = soundEffectsEnabled;
+            SetSoundEffects(soundEffectsEnabled);
+        }
 
-        // Add similar logs for other settings like resolution, quality, etc.
+        if (PlayerPrefs.HasKey("MusicEnabled"))
+        {
+            bool musicEnabled = PlayerPrefs.GetInt("MusicEnabled") == 1;
+            musicToggle.isOn = musicEnabled;
+            SetMusic(musicEnabled);
+        }
     }
+
 
 
     public void ResetToDefaults()

@@ -2035,6 +2035,17 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &409264050 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5285995496570744271, guid: 76489bed8be8be44f9ae3c90be419e06, type: 3}
+  m_PrefabInstance: {fileID: 1673598951}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9085046f02f69544eb97fd06b6048fe2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &417944519
 GameObject:
   m_ObjectHideFlags: 0
@@ -6600,6 +6611,8 @@ MonoBehaviour:
   resolutionDropdown: {fileID: 1773596151}
   soundSlider: {fileID: 1264015179}
   fullScreenToggle: {fileID: 5285995497040040266}
+  soundEffectsToggle: {fileID: 409264050}
+  musicToggle: {fileID: 1944655595}
 --- !u!1 &1410219971
 GameObject:
   m_ObjectHideFlags: 0
@@ -10627,6 +10640,17 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1941359060}
   m_CullTransparentMesh: 1
+--- !u!114 &1944655595 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5285995496570744271, guid: 76489bed8be8be44f9ae3c90be419e06, type: 3}
+  m_PrefabInstance: {fileID: 1788578650}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9085046f02f69544eb97fd06b6048fe2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1946390264
 GameObject:
   m_ObjectHideFlags: 0
