@@ -21,6 +21,8 @@ public class PlayerController : MonoBehaviour
 
     public bool hasKey = false;
 
+    public GameObject angel;
+
     void Awake()
     {
         if (Instance == null)
@@ -71,6 +73,18 @@ public class PlayerController : MonoBehaviour
         legsAnimator.SetFloat("Speed", movement.magnitude);
 
         UpdateSpriteFlip(horizontal);
+        if (Input.GetKeyDown(KeyCode.Q)) GuardianAngel();
+
+    }
+
+    void GuardianAngel()
+    {
+        if (ResourceManager.Instance.gearCount >= 5)
+        {
+            ResourceManager.Instance.AddGear(-5);
+            godMode = true;
+            angel.SetActive(true);
+        }
     }
 
     void FixedUpdate()
@@ -141,12 +155,17 @@ public class PlayerController : MonoBehaviour
     {
         if (godMode)
         {
+            SoundManager.Instance.PlayPlayerDeathSound();
+            godMode = false;
+            angel.SetActive(false);
             return;
         }
         if (isDead)
         {
             return;
         }
+        godMode = false;
+        angel.SetActive(false);
         isDead = true;
         SoundManager.Instance.PlayPlayerDeathSound();
         LoadLevel((Levels)SceneManager.GetActiveScene().buildIndex);
