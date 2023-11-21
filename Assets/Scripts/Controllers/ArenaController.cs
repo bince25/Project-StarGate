@@ -12,12 +12,12 @@ public class ArenaController : MonoBehaviour
             }
             else
             {
-                gameObject.SetActive(false);
+                gameObject.SetActive(true);
             }
         }
         else
         {
-            gameObject.SetActive(false);
+            gameObject.SetActive(true);
         }
     }
 }
