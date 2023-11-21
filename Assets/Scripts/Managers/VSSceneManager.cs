@@ -24,7 +24,7 @@ public class VSSceneManager : MonoBehaviour
     }
     IEnumerator CloseDialogue()
     {
-        yield return new WaitForSeconds(5);
+        yield return new WaitForSeconds(3);
         DialogueManager.Instance.CloseDialogueBox();
     }
 }
