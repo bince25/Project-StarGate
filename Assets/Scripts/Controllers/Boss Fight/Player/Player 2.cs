@@ -41,7 +41,7 @@ public class Player2 : Player
         // Add additional collision handling logic for Player 2 if needed
     }
 
-    protected override void Die()
+    public override void Die()
     {
         base.Die();
         // Add additional death logic for Player 2 if needed

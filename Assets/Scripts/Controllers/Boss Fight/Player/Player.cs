@@ -117,7 +117,7 @@ public class Player : MonoBehaviour
         }
     }
 
-    protected virtual void Die()
+    public virtual void Die()
     {
 
         if (godMode)

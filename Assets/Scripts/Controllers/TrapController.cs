@@ -12,6 +12,8 @@ public class TrapController : MonoBehaviour
     public bool isActive = false;
     public bool disabled = false;
 
+    public bool isVs = false;
+
     void Start()
     {
         switch (trapType)
@@ -66,13 +68,27 @@ public class TrapController : MonoBehaviour
             case Trap.Spikes:
                 if (other.CompareTag("Player") && animator.GetBool("isActivated"))
                 {
-                    PlayerController.Instance.Die();
+                    if (isVs)
+                    {
+                        other.gameObject.GetComponent<Player>().Die();
+                    }
+                    else
+                    {
+                        PlayerController.Instance.Die();
+                    }
                 }
                 break;
             case Trap.Fall:
                 if (other.CompareTag("Player"))
                 {
-                    PlayerController.Instance.Die();
+                    if (isVs)
+                    {
+                        other.gameObject.GetComponent<Player>().Die();
+                    }
+                    else
+                    {
+                        PlayerController.Instance.Die();
+                    }
                 }
                 break;
         }
@@ -85,13 +101,27 @@ public class TrapController : MonoBehaviour
             case Trap.Spikes:
                 if (other.CompareTag("Player") && animator.GetBool("isActivated"))
                 {
-                    PlayerController.Instance.Die();
+                    if (isVs)
+                    {
+                        other.gameObject.GetComponent<Player>().Die();
+                    }
+                    else
+                    {
+                        PlayerController.Instance.Die();
+                    }
                 }
                 break;
             case Trap.Fall:
                 if (other.CompareTag("Player"))
                 {
-                    PlayerController.Instance.Die();
+                    if (isVs)
+                    {
+                        other.gameObject.GetComponent<Player>().Die();
+                    }
+                    else
+                    {
+                        PlayerController.Instance.Die();
+                    }
                 }
                 break;
         }
