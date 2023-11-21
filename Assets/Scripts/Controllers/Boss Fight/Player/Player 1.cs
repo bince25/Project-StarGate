@@ -56,4 +56,29 @@ public class Player1 : Player
     {
         return "Vertical";
     }
+
+    protected override void Dash()
+    {
+        if (Time.time > lastDashTime + dashCooldown && Input.GetKey(KeyCode.LeftShift))
+        {
+            SoundManager.Instance.PlayDashSound();
+            isDashing = true;
+            lastDashTime = Time.time;
+
+            // Store the current movement direction for dashing
+            dashDirection = new Vector2(Input.GetAxis(GetHorizontalInput()), Input.GetAxis(GetVerticalInput())).normalized;
+        }
+
+        if (isDashing)
+        {
+            if (Time.time < lastDashTime + dashDuration)
+            {
+                rb.velocity = dashDirection * dashSpeed;
+            }
+            else
+            {
+                isDashing = false;
+            }
+        }
+    }
 }

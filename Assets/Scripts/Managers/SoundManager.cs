@@ -26,6 +26,7 @@ public class SoundManager : MonoBehaviour
     public AudioClip[] swordBulletSounds;
     public AudioClip[] menuSounds;
     public AudioClip[] music;
+    public AudioClip[] dashSounds;
 
     private List<AudioSource> audioSources = new List<AudioSource>();
     private int audioSourcePoolSize = 10; // Adjust as needed
@@ -103,6 +104,8 @@ public class SoundManager : MonoBehaviour
     public void PlaySwordBulletSound() { PlaySound(swordBulletSounds, soundEffectGroup); }
 
     public void PlayMenuSound() { PlaySound(menuSounds, uiGroup); }
+
+    public void PlayDashSound() { PlaySound(dashSounds, soundEffectGroup); }
 
     // Music control methods
     public void PlayMusic()

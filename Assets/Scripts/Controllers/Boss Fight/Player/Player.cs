@@ -1,5 +1,7 @@
+using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
@@ -9,6 +11,17 @@ public class Player : MonoBehaviour
 
     public float moveSpeed = 10f;
     public bool isDead, godMode, killedByPlayer;
+
+    public float dashSpeed = 25f;
+    public float dashDuration = 0.7f;
+    public float dashCooldown = 1f;
+
+    [SerializeField]
+    private Slider slider;
+
+    protected float lastDashTime;
+    protected bool isDashing;
+    protected Vector2 dashDirection;
 
     protected virtual void Awake()
     {
@@ -26,6 +39,7 @@ public class Player : MonoBehaviour
             }
         }
         killedByPlayer = false;
+        lastDashTime = Time.time;
     }
 
     protected virtual void Start()
@@ -36,22 +50,30 @@ public class Player : MonoBehaviour
 
     protected virtual void Update()
     {
-        Move();
+        slider.value = Math.Min(Math.Min(Time.time - lastDashTime, dashCooldown) / dashCooldown, 1);
+        if (!isDashing)
+        {
+            Move();
+        }
     }
 
     protected virtual void FixedUpdate()
     {
-        // Apply movement in FixedUpdate for physics consistency
-        Vector2 moveInput = new Vector2(Input.GetAxis(GetHorizontalInput()), Input.GetAxis(GetVerticalInput()));
-        Vector2 moveVelocity = moveInput.normalized * moveSpeed;
-        rb.velocity = moveVelocity;
+        if (!isDashing)
+        {
+            Vector2 moveInput = new Vector2(Input.GetAxis(GetHorizontalInput()), Input.GetAxis(GetVerticalInput()));
+            Vector2 moveVelocity = moveInput.normalized * moveSpeed;
+            rb.velocity = moveVelocity;
+        }
+
+        Dash();
     }
 
     protected virtual void Move()
     {
         Vector2 movement = new Vector2(Input.GetAxis(GetHorizontalInput()), Input.GetAxis(GetVerticalInput())).normalized;
 
-        legsAnimator.SetBool("IsWalking", movement.magnitude >= 0.1f);
+        //legsAnimator.SetBool("IsWalking", movement.magnitude >= 0.1f);
         legsAnimator.SetFloat("Speed", movement.magnitude);
 
         UpdateSpriteFlip(movement.x);
@@ -111,6 +133,29 @@ public class Player : MonoBehaviour
         gameObject.SetActive(false);
     }
 
+    protected virtual void Dash()
+    {
+        if (Time.time > lastDashTime + dashCooldown && Input.GetKey(KeyCode.LeftShift))
+        {
+            isDashing = true;
+            lastDashTime = Time.time;
+
+            // Store the current movement direction for dashing
+            dashDirection = new Vector2(Input.GetAxis(GetHorizontalInput()), Input.GetAxis(GetVerticalInput())).normalized;
+        }
+
+        if (isDashing)
+        {
+            if (Time.time < lastDashTime + dashDuration)
+            {
+                rb.velocity = dashDirection * dashSpeed;
+            }
+            else
+            {
+                isDashing = false;
+            }
+        }
+    }
 
 
     protected virtual string GetHorizontalInput()

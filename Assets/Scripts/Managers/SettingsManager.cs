@@ -33,7 +33,32 @@ public class SettingsManager : MonoBehaviour
 
     void Start()
     {
+        InitializeUIElements();
         InitializeSettings();
+        GameObject inGameOptions = GameObject.Find("InGameOptions");
+        if (inGameOptions != null)
+        {
+            inGameOptions.SetActive(false);
+        }
+    }
+
+    void InitializeUIElements()
+    {
+        if (resolutionDropdown == null)
+            resolutionDropdown = GameObject.Find("ResolutionDropdown").GetComponent<TMP_Dropdown>();
+
+        if (soundSlider == null)
+            soundSlider = GameObject.Find("SoundSlider").GetComponent<Slider>();
+
+        if (fullScreenToggle == null)
+            fullScreenToggle = GameObject.Find("FullScreenToggle").GetComponent<Toggle>();
+
+        if (soundEffectsToggle == null)
+            soundEffectsToggle = GameObject.Find("SoundEffectsToggle").GetComponent<Toggle>();
+
+        if (musicToggle == null)
+            musicToggle = GameObject.Find("MusicToggle").GetComponent<Toggle>();
+
     }
 
     void InitializeSettings()
